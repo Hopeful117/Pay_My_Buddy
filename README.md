@@ -28,3 +28,9 @@ Le script Bash pour sauvegarder la base de données est disponible dans le fichi
 
 ## Script Bash de restauration de la base de données
 Le script Bash pour restaurer la base de données est disponible dans le fichier `docs/restore_db.sh`
+
+## Note
+Pour exécuter les scripts nécessitant un mot de passe, assurez-vous de définir la variable d'environnement "MYSQL_PASSWORD" avec le mot de passe approprié avant d'exécuter les scripts.
+Par exemple, dans un terminal bash, vous pouvez utiliser la commande suivante :
+```bashexport MYSQL_PASSWORD="votre_mot_de_passe"```
+Remplacez "votre_mot_de_passe" par le mot de passe réel que vous souhaitez utiliser.
