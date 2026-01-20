@@ -22,3 +22,9 @@ Le script SQL pour peupler la base de données est disponible dans le fichier `d
 
 ## Script SQL de test de la base de données
 Le script SQL pour tester la base de données est disponible dans le fichier `docs/Script.sql`
+
+## Script Bash de sauvegarde de la base de données
+Le script Bash pour sauvegarder la base de données est disponible dans le fichier `docs/backup_db.sh`
+
+## Script Bash de restauration de la base de données
+Le script Bash pour restaurer la base de données est disponible dans le fichier `docs/restore_db.sh`
