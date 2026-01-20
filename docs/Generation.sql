@@ -97,6 +97,78 @@ END;
 //
 
 DELIMITER ;
+DELIMITER //
+
+CREATE PROCEDURE add_connection(IN p_user_id INT, IN p_connection_id INT)
+BEGIN
+    -- Empêche de se connecter à soi-même
+    IF p_user_id = p_connection_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot connect user to itself';
+    ELSE
+        INSERT IGNORE INTO user_connection (user_id, connection_id)
+        VALUES (p_user_id, p_connection_id);
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE remove_connection(IN p_user_id INT, IN p_connection_id INT)
+BEGIN
+    DELETE FROM user_connection
+    WHERE user_id = p_user_id AND connection_id = p_connection_id;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE add_transaction(
+    IN p_sender INT,
+    IN p_receiver INT,
+    IN p_description VARCHAR(255),
+    IN p_amount DECIMAL(10,2)
+)
+BEGIN
+    -- Vérifie que le montant est positif
+    IF p_amount <= 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Amount must be positive';
+    ELSE
+        INSERT INTO transaction (sender, receiver, description, amount)
+        VALUES (p_sender, p_receiver, p_description, p_amount);
+    END IF;
+END;
+//
+
+DELIMITER ;
+DELIMITER //
+
+CREATE PROCEDURE list_connections(IN p_user_id INT)
+BEGIN
+    SELECT u.id, u.username
+    FROM user_connection uc
+    JOIN user u ON uc.connection_id = u.id
+    WHERE uc.user_id = p_user_id AND u.is_active = 1;
+END;
+//
+
+DELIMITER ;
+DELIMITER //
+
+CREATE PROCEDURE list_transactions(IN p_user_id INT)
+BEGIN
+    SELECT t.id, t.sender, t.receiver, t.description, t.amount, t.created_at
+    FROM transaction t
+    WHERE t.sender = p_user_id OR t.receiver = p_user_id;
+END;
+//
+
+DELIMITER ;
+
+
 
 
 SHOW TABLES;

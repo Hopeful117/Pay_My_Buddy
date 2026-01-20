@@ -15,13 +15,13 @@ Pay my Buddy est une application web qui permet aux utilisateurs de transférer 
 ![MPD Pay my Buddy](docs/MPD.svg)
 
 ## Script SQL de création de la base de données
-Le script SQL pour créer la base de données est disponible dans le fichier `docs/Schema.sql`
+Le script SQL pour créer la base de données est disponible dans le fichier `docs/Generation.sql`
 
 ## Script SQL de peuplement de la base de données
 Le script SQL pour peupler la base de données est disponible dans le fichier `docs/Peuplement.sql`
 
 ## Script SQL de test de la base de données
-Le script SQL pour tester la base de données est disponible dans le fichier `docs/Script.sql`
+Le script SQL pour tester la base de données est disponible dans le fichier `docs/Test.sql`
 
 ## Script Bash de sauvegarde de la base de données
 Le script Bash pour sauvegarder la base de données est disponible dans le fichier `docs/backup_db.sh`
@@ -36,6 +36,21 @@ utilisation : CALL deactivate_user(user_id INT);
 ### anonymize_user
 Anonymise les informations personnelles d'un utilisateur dans la base de données.
 utilisation : CALL anonymize_user(user_id INT);
+### add_connection
+Ajoute une connexion entre deux utilisateurs dans la base de données.
+utilisation : CALL add_connection(user_id INT, friend_id INT);
+### remove_connection
+Supprime une connexion entre deux utilisateurs dans la base de données.
+utilisation : CALL remove_connection(user_id INT, friend_id INT);
+### add_transaction
+Ajoute une transaction entre deux utilisateurs dans la base de données.
+utilisation : CALL add_transaction(sender_id INT, receiver_id INT, amount DECIMAL(10,2));
+### list_connections
+Liste les connexions d'un utilisateur dans la base de données.
+utilisation : CALL list_connections(user_id INT);
+### list_transactions
+Liste les transactions d'un utilisateur dans la base de données.
+utilisation : CALL list_transactions(user_id INT);
 
 
 ## Note
