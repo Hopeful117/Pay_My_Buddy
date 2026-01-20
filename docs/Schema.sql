@@ -30,6 +30,21 @@ ALTER TABLE `transaction` ADD FOREIGN KEY (`sender`) REFERENCES `user` (`id`);
 
 ALTER TABLE `transaction` ADD FOREIGN KEY (`receiver`) REFERENCES `user` (`id`);
 
+ALTER TABLE user_connection
+  ADD CONSTRAINT fk_user_connection_user
+  FOREIGN KEY (user_id) REFERENCES `user` (id)
+  ON DELETE CASCADE;
+
+ALTER TABLE transaction
+    ADD CONSTRAINT fk_transaction_sender
+    FOREIGN KEY (sender) REFERENCES `user` (id)
+    ON DELETE RESTRICT;
+
+ALTER TABLE transaction
+    ADD CONSTRAINT fk_transaction_receiver
+    FOREIGN KEY (receiver) REFERENCES `user` (id)
+    ON DELETE RESTRICT;
+
 CREATE INDEX idx_user_connection_user
 ON `user_connection` (`user_id`);
 
