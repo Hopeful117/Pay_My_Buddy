@@ -13,3 +13,6 @@ Pay my Buddy est une application web qui permet aux utilisateurs de transférer 
 
 ## Diagramme de la base de données
 ![MPD Pay my Buddy](docs/MPD.svg)
+
+## Script SQL de création de la base de données
+Le script SQL pour créer la base de données est disponible dans le fichier `docs/Schema.sql

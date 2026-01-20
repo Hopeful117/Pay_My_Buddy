@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS paymybuddy_db;
+USE paymybuddy_db;
+
 CREATE TABLE `user` (
   `id` integer PRIMARY KEY,
   `username` VARCHAR(255) UNIQUE NOT NULL,
@@ -26,3 +29,21 @@ ALTER TABLE `user_connection` ADD FOREIGN KEY (`connection_id`) REFERENCES `user
 ALTER TABLE `transaction` ADD FOREIGN KEY (`sender`) REFERENCES `user` (`id`);
 
 ALTER TABLE `transaction` ADD FOREIGN KEY (`receiver`) REFERENCES `user` (`id`);
+
+CREATE INDEX idx_user_connection_user
+ON `user_connection` (`user_id`);
+
+CREATE INDEX idx_user_connection_connection
+ON `user_connection` (`connection_id`);
+
+CREATE INDEX idx_transaction_sender
+ON `transaction` (`sender`);
+
+CREATE INDEX idx_transaction_receiver
+ON `transaction` (`receiver`);
+
+SHOW TABLES;
+
+DESCRIBE `user`;
+DESCRIBE `user_connection`;
+DESCRIBE `transaction`;
