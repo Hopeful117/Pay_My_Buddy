@@ -1,7 +1,6 @@
 package com.pay_my_buddy.payementsystem.repository;
 
 import com.pay_my_buddy.payementsystem.model.User;
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,15 +19,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findUserById(int id);
 
     @Query(value=("CALL deactivate_user(:id) "), nativeQuery = true)
-    Boolean updateIsActiveById(Boolean isActive, int id);
+    void updateIsActiveById(Boolean isActive, int id);
 
     @Modifying
     @Query("UPDATE User u SET u.password = :password WHERE u.id = :id")
-    Boolean updateUserPasswordById(String password, int id);
+    void updateUserPasswordById(String password, int id);
 
     @Modifying
     @Query(value=("CALL anonymyze_user(:id)"), nativeQuery = true)
-    Boolean deleteUserById(int id);
+    void anonymizeUserById(int id);
 
 
 }

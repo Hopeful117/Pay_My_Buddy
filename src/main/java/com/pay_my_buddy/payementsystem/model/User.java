@@ -1,34 +1,33 @@
 package com.pay_my_buddy.payementsystem.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 
 import java.util.List;
 
 @Entity
 @Table(name="user")
+@Data
+@RequiredArgsConstructor
 public class User {
-    @Setter
-    @Getter
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
-    @Setter
-    @Getter
+
     @Column(name="username", nullable = false, unique = true)
     private String username;
-    @Setter
-    @Getter
+
     @Column(name="email", nullable = false, unique = true)
     private String email;
-    @Setter
-    @Getter
+
     @Column(name="password", nullable = false)
     private String password;
-    @Setter
-    @Getter
+
     @Column(name="is_active", nullable = false)
     private Boolean isActive;
     @ManyToMany

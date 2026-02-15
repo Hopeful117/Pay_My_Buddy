@@ -1,8 +1,11 @@
 INSERT INTO `user` (id, username, email, password) VALUES
-(1, 'alice', 'alice@example.com', '$2a$10$alicehash'),
-(2, 'bob', 'bob@example.com', '$2a$10$bobhash'),
-(3, 'charlie', 'charlie@example.com', '$2a$10$charliehash'),
-(4, 'diana', 'diana@example.com', '$2a$10$dianahash');
+(1, 'alice', 'alice@example.com', '$2a$10$gFZy9b1HshkQ4E2R9Y2/2OZK2H7l0tW0qN9j/1qF8b4fTzY2k1Wv6'
+),
+(2, 'bob', 'bob@example.com', '$2a$10$gFZy9b1HshkQ4E2R9Y2/2OZK2H7l0tW0qN9j/1qF8b4fTzY2k1Wv6'),
+(3, 'charlie', 'charlie@example.com', '$2a$10$gFZy9b1HshkQ4E2R9Y2/2OZK2H7l0tW0qN9j/1qF8b4fTzY2k1Wv6
+'),
+(4, 'diana', 'diana@example.com', '$2a$10$gFZy9b1HshkQ4E2R9Y2/2OZK2H7l0tW0qN9j/1qF8b4fTzY2k1Wv6
+');
 
 INSERT INTO `user_connection` (user_id, connection_id, created_at) VALUES
 (1, 2, '2025-01-10 09:30:00'),

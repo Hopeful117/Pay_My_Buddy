@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:placeholder="http://www.w3.org/1999/xhtml" lang="FR">
+
+
+<head>
+    <title>Connexion</title>
+    <link rel="stylesheet"  th:href="@{/style.css}">
+</head>
+<body>
+<div class="box">
+    <div>
+        <button class="company">Pay My Buddy</button>
+    </div>
+
+    <form th:action="@{/login}" method="post">
+
+        <label>
+            <input type="text" name="email" placeholder="Email">
+        </label>
+
+        <label>
+            <input type="password" name="password" placeholder="Mot de passe">
+
+        </label>
+        <button class="validationBtn" type="submit">Se connecter</button>
+
+    </form>
+
+
+
+
+
+
+</div>
+
+
+</body>
+</html>
