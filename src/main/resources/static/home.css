@@ -1,0 +1,107 @@
+
+main {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-around;
+margin:50px;
+
+}
+form {
+display: flex;
+flex-direction: row;
+align-items: center;
+gap: 20px;
+justify-content: space-around;
+margin-bottom:100px;
+
+}
+select{
+background-color: white;
+width:399px;
+height:81px;
+padding: 8px 16px 8px 16px;
+border:solid 1px #E0E0E0;
+border-radius:8px;
+}
+input[type="text"]{
+height:81px;
+width:382px;
+padding-left: 16px;
+
+}
+
+input {
+font-style:Regular;
+font-size:24px;
+line-height:24px;
+weight:400;
+border:solid 1px #E0E0E0;
+border-radius:8px;
+
+}
+input::placeholder{
+font-size:24px;
+color:black;
+weight:400;
+line-height:24px
+}
+
+
+
+.validationBtn {
+color: white;
+background-color: #207FEE;
+padding: 14px 24px 14px 24px;
+border-radius: 8px;
+weight: 700;
+font-size: 16px;
+weight:700;
+font-style: bold;
+font-family: 'Inter', sans-serif;
+width:120px;
+height:88px;
+
+
+
+}
+.input-money {
+    position: relative;
+    display: inline-block;
+}
+
+.input-money input {
+    padding-right: 25px;
+    padding-left:25px;
+
+    height: 35px;
+    width:189px;
+    height:121px;
+}
+
+.currency {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* important */
+    color: black;
+    font-size:24px;
+    font-weight:400;
+}
+
+table {
+border:1px solid #E0E0E0;
+padding:10px 10px 100px 10px;
+width:100%;
+border-radius:8px;
+margin-left:30px;
+}
+td {
+border-top:1px solid #E0E0E0;
+height:36px;
+}
+th{
+text-align:left;
+height:36px;
+}

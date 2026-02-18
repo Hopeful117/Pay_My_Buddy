@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -19,14 +21,14 @@ public class UserServiceImpl implements UserService {
 
 
     // Création d'un utilisateur
-    @Transactional
+   @Override
     public boolean createUser(User user)
 {
         String username = user.getUsername();
         String password = user.getPassword();
         String email = user.getEmail();
         String hash=passwordEncoder.encode(password); // Hash du mot de passe
-        if (userRepository.findByUsername(username) != null)
+        if (userRepository.findByUsername(username).isPresent())
         { log.warn("User with username {} already exists", username);
             return false;
         }
@@ -40,10 +42,10 @@ public class UserServiceImpl implements UserService {
     }
 
     // Désactivation et anonymisation d'un utilisateur
-    @Transactional
+    @Override
     public void deleteAndAnonymizeUser(int id) {
-        User user = userRepository.findUserById(id);
-        if (user == null) {
+        Optional<User> user = userRepository.findUserById(id);
+        if (user.isEmpty()) {
             log.warn("User with id {} not found", id);
             throw new IllegalArgumentException("User not found");
         }
@@ -54,16 +56,16 @@ public class UserServiceImpl implements UserService {
     }
 
     // Mise à jour du mot de passe
-    @Transactional
+    @Override
     public void updateUserPasswordById(String newPassword, int id) {
-        User user = userRepository.findUserById(id);
-        if (user == null) {
+        Optional <User> user = userRepository.findUserById(id);
+        if (user.isEmpty()) {
             log.warn("User with id {} not found", id);
             throw new IllegalArgumentException("User not found");
         }
 
         // Vérification si le mot de passe est le même
-        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+        if (passwordEncoder.matches(newPassword, user.get().getPassword())) {
             log.warn("New password is the same as the old password for user {}", id);
             throw new IllegalArgumentException("New password must be different");
         }
@@ -73,14 +75,14 @@ public class UserServiceImpl implements UserService {
     }
 
     // Récupération d'un utilisateur par email
-    @Transactional
-    public User getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
+    @Override
+    public Optional <User>findUserByEmail(String email) {
+       Optional <User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
             log.warn("User with email {} not found", email);
             throw new IllegalArgumentException("User not found");
         }
-        log.info("User found: {}", user.getEmail());
+        log.info("User found: {}", user.get().getEmail());
         return user;
     }
 

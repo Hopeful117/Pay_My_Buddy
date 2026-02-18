@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,17 +22,17 @@ public class CustomUserDetailsService  implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email)  {
-        User user =userRepository.findByEmail(email);
-        if (user == null) {
+        Optional <User> user =userRepository.findByEmail(email);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
 
         List<SimpleGrantedAuthority> authorities =
                 List.of(new SimpleGrantedAuthority("AUTHENTICATED"));
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                user.getIsActive(),
+                user.get().getEmail(),
+                user.get().getPassword(),
+                user.get().getIsActive(),
                 true,
                 true,
                 true,

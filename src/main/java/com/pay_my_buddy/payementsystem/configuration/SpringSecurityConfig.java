@@ -30,7 +30,7 @@ public class SpringSecurityConfig {
             auth.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll();
             auth.requestMatchers("/register", "/login", "/**.css/**", "/js/**").permitAll();
             auth.anyRequest().authenticated();
-        }).formLogin(form->form.loginPage("/login").usernameParameter("email").permitAll())
+        }).formLogin(form->form.loginPage("/login").usernameParameter("email").defaultSuccessUrl("/home", true).permitAll())
           .build();
     }
     @Bean

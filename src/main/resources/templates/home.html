@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/home.css}">
+    <link rel="stylesheet" th:href="@{/navbar.css}">
 </head>
 <body>
-$END$
+<header th:replace="navbar :: navbar(currentPage='home')"></header>
+<main>
+    <form>
+        <label>
+        <select id="recipient">
+            <option value="" disabled selected>Sélectionner une relation</option>
+            <option th:each="connection : ${connections}" th:value="${connection.id}" th:text="${connection.username}"></option>
+        </select>
+        </label>
+        <label class="description">
+            <input type="text" placeholder="Description" id="description">
+        </label>
+        <label class="input-money">
+            <input type="number" min="0" step="0.01"  placeholder=0 id="amount">
+            <span class="currency">€</span>
+        </label>
+
+
+    <button class="validationBtn">Payer</button>
+    </form>
+    <table>
+        <thead>
+        <tr><th>Mes transactions</th></tr>
+        <tr>
+            <th>Relations</th>
+            <th>Description</th>
+            <th>Montant</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${transactions}">
+            <td th:text="${transaction.receiver.username}"></td>
+            <td th:text="${transaction.description}"></td>
+            <td th:text="${transaction.amount}+ '€'"></td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</main>
+
 </body>
 </html>

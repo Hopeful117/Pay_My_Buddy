@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Navbar</title>
+    <link rel="stylesheet" th:href="@{/navbar.css}">
 </head>
 <body>
-$END$
+<header th:fragment="navbar(currentPage)">
+    <p>Pay My Buddy</p>
+    <nav>
+        <a class="nav-link" th:href="@{/home}" th:classappend="${currentPage == 'home'} ? 'active'">Transférer</a>
+        <a class="nav-link" th:href="@{/profil}" th:classappend="${currentPage == 'profil'} ? 'active'">Profil</a>
+        <a class="nav-link" th:href="@{relations}" th:classappend="${currentPage == 'relations'} ? 'active'">Ajouter relation</a>
+        <a class="nav-link" th:href="@{/logout}">Se déconnecter</a>
+    </nav>
+</header>
+
 </body>
 </html>

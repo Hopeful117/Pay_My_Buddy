@@ -1,0 +1,37 @@
+header {
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+align-items: center;
+}
+header p {
+font-size: 20px;
+font-weight: 500;
+font-family: 'Inter', sans-serif;
+}
+nav {
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+gap:30px;
+
+}
+.nav-link {
+color:black;
+text-decoration: none;
+font-weight: 500;
+font-size: 20px;
+font-family: 'Inter', sans-serif;
+
+}
+.active {
+color:#207FEE;
+font-weight: 700;
+font-size: 20px;
+font-family: 'Inter', sans-serif;
+font-style: bold;
+
+}
+nav::visited {
+color: black;
+}
