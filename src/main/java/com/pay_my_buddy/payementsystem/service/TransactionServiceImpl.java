@@ -1,7 +1,9 @@
 package com.pay_my_buddy.payementsystem.service;
 
 import com.pay_my_buddy.payementsystem.model.Transaction;
+import com.pay_my_buddy.payementsystem.model.User;
 import com.pay_my_buddy.payementsystem.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,16 +18,18 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
 
     @Override
-    public boolean addTransaction(int senderId, int receiverId, BigDecimal amount) {
-        log.debug("Adding transaction from senderId: {}, receiverId: {}, amount: {}", senderId, receiverId, amount);
+    @Transactional
+    public void transfer(User sender, User receiver, String description, BigDecimal amount) {
+        log.debug("Adding transaction from sender: {}, receiver: {},description{} amount: {}", sender, receiver,description, amount);
         try {
-            transactionRepository.addTransaction(senderId, receiverId, amount);
+            transactionRepository.addTransaction(sender.getId(), receiver.getId(),description, amount);
             log.info("Transaction added successfully");
-            return true;
-        } catch (Exception e) {
-            log.warn("Failed to add transaction");
 
-            return false;
+        } catch (Exception exception) {
+            log.error("Failed to add transaction",exception);
+            throw new RuntimeException("Une erreur s'est produite lors de la transaction");
+
+
         }
     }
 
@@ -39,6 +43,18 @@ public class TransactionServiceImpl implements TransactionService {
             log.info("Retrieved {} transactions for userId: {}", transactions.size(), userId);
         }
         return transactions;
+    }
+
+    @Override
+    public List<Transaction> getTransactionsSentByUserId(int userId){
+        return getTransactionsByUserId(userId).stream().filter(transaction -> transaction.getSender().getId()==userId).toList();
+
+    }
+
+    @Override
+    public List<Transaction>getTransactionsReceivedByUserId(int userId){
+        return getTransactionsByUserId(userId).stream().filter(transaction -> transaction.getReceiver().getId()==userId).toList();
+
     }
 
 

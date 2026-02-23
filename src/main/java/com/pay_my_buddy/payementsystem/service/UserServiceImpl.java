@@ -21,24 +21,24 @@ public class UserServiceImpl implements UserService {
 
 
     // Création d'un utilisateur
-   @Override
-    public boolean createUser(User user)
-{
-        String username = user.getUsername();
-        String password = user.getPassword();
-        String email = user.getEmail();
-        String hash=passwordEncoder.encode(password); // Hash du mot de passe
-        if (userRepository.findByUsername(username).isPresent())
-        { log.warn("User with username {} already exists", username);
-            return false;
+    @Override
+    public void createUser(final String username, final String email, final String password) {
+        final String hash = passwordEncoder.encode(password); // Hash du mot de passe
+
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Le username ou l'email sont déjà utilisés");
         }
 
-        User newUser = new User(username, email,hash,true);
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("Le username ou l'email sont déjà utilisés");
+        }
+
+        final User newUser = new User(username, email, hash, true);
         // Hash du mot de passe avant sauvegarde
 
         userRepository.save(newUser);
-        log.info("User created successfully: {}", user.getUsername());
-        return true;
+        log.info("User created successfully: {}", username);
+
     }
 
     // Désactivation et anonymisation d'un utilisateur
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     // Mise à jour du mot de passe
     @Override
     public void updateUserPasswordById(String newPassword, int id) {
-        Optional <User> user = userRepository.findUserById(id);
+        Optional<User> user = userRepository.findUserById(id);
         if (user.isEmpty()) {
             log.warn("User with id {} not found", id);
             throw new IllegalArgumentException("User not found");
@@ -76,14 +76,26 @@ public class UserServiceImpl implements UserService {
 
     // Récupération d'un utilisateur par email
     @Override
-    public Optional <User>findUserByEmail(String email) {
-       Optional <User> user = userRepository.findByEmail(email);
+    public Optional<User> findUserByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {
             log.warn("User with email {} not found", email);
             throw new IllegalArgumentException("User not found");
         }
         log.info("User found: {}", user.get().getEmail());
         return user;
+    }
+
+    @Override
+    public Optional<User>findUserByUsername(String username){
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            log.warn("User with username {} not found", username);
+            throw new IllegalArgumentException("User not found");
+        }
+        log.info("User found: {}", user.get().getUsername());
+        return user;
+
     }
 
 }

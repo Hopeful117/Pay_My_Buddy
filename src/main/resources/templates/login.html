@@ -5,6 +5,7 @@
 <head>
     <title>Connexion</title>
     <link rel="stylesheet"  th:href="@{/login.css}">
+    <link rel="stylesheet" th:href="@{/messages.css}">
 </head>
 <body>
 <div class="box">
@@ -22,6 +23,7 @@
             <input type="password" name="password" placeholder="Mot de passe">
 
         </label>
+        <div th:replace="~{messages :: messages}"></div>
         <button class="validationBtn" type="submit">Se connecter</button>
 
     </form>

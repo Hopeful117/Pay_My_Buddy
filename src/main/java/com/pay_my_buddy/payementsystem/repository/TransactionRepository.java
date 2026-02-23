@@ -1,6 +1,7 @@
 package com.pay_my_buddy.payementsystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,7 @@ public interface TransactionRepository  extends JpaRepository<Transaction,Intege
     @Query(value=("CALL list_transactions(:userId)"),nativeQuery = true)
     List<Transaction> getTransactionsByUserId(@Param("userId")int userId);
 
-    @Query(value=("CALL add_transaction(:sender_id, :receiver_id, :amount"), nativeQuery = true)
-    void addTransaction(@Param("sender_Id")int senderId, @Param("receiver_id")int receiverId, @Param("amount")BigDecimal amount);
+    @Modifying
+    @Query(value=("CALL add_transaction(:sender, :receiver,:description, :amount)"), nativeQuery = true)
+    void addTransaction(@Param("sender")int senderId, @Param("receiver")int receiverId,@Param("description")String description, @Param("amount")BigDecimal amount);
 }

@@ -5,6 +5,7 @@
 <head>
     <title>Inscription</title>
     <link rel="stylesheet"  th:href="@{/login.css}">
+    <link rel="stylesheet" th:href="@{/messages.css}">
 </head>
 <body>
 <div class="box">
@@ -12,7 +13,7 @@
 <button class="company">Pay My Buddy</button>
     </div>
 
-<form th:action="@{/register}" th:object="${user}" method="post">
+<form th:action="@{/register}" th:object="${registerDTO}" method="post">
 
 
     <label>
@@ -31,13 +32,13 @@
     </label>
 
 
-
+    <div th:replace="~{messages :: messages}"></div>
     <button class="validationBtn" type="submit">S'inscrire</button>
 
 
 </form>
     </div>
-</div>
+
 
 </body>
 </html>

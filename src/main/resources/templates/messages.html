@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>messages</title>
+
+</head>
+<body>
+
+<div th:fragment="messages">
+    <!-- Liste d'erreurs métier -->
+    <div th:if="${errors != null and !#lists.isEmpty(errors)}"
+         class="alert alert-error">
+        <ul>
+            <li class="error" th:each="err : ${errors}" th:text="${err}"></li>
+        </ul>
+    </div>
+
+    <!-- Message de succès -->
+    <div th:if="${success != null}" class="alert alert-success">
+        <p class="success" th:text="${success}"></p>
+    </div>
+</div>
+
+
+</body>
+</html>

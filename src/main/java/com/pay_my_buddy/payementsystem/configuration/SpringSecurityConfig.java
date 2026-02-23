@@ -33,10 +33,12 @@ public class SpringSecurityConfig {
         }).formLogin(form->form.loginPage("/login").usernameParameter("email").defaultSuccessUrl("/home", true).permitAll())
           .build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationManager authentificationManager(HttpSecurity http, PasswordEncoder passwordEncoder)throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
