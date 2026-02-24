@@ -1,7 +1,6 @@
 package com.pay_my_buddy.payementsystem.controllers;
 
 
-import com.pay_my_buddy.payementsystem.DTO.RegisterDTO;
 import com.pay_my_buddy.payementsystem.DTO.TransferDTO;
 import com.pay_my_buddy.payementsystem.model.Transaction;
 import com.pay_my_buddy.payementsystem.model.User;
@@ -11,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +35,7 @@ public class TransferController {
     public String getTransferPage(Model model, Authentication authentication) {
         String email = authentication.getName();
         Optional<User> user = userService.findUserByEmail(email);
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             return "redirect:/login";
         }
         List<User> user_connections = user.get().getConnections();
@@ -50,7 +48,7 @@ public class TransferController {
 
     @PostMapping("/transfer")
     public String Transfer(Model model, Principal principal, @Valid @ModelAttribute TransferDTO transferDTO, BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes){
+                           RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -72,7 +70,7 @@ public class TransferController {
             return "home";
         }
     }
-    }
+}
 
 
 

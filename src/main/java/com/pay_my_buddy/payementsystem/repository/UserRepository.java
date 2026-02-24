@@ -21,7 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.id = :id")
     Optional<User> findUserById(int id);
 
-    @Query(value=("CALL deactivate_user(:id) "), nativeQuery = true)
+    @Query(value = ("CALL deactivate_user(:id) "), nativeQuery = true)
     void updateIsActiveById(Boolean isActive, int id);
 
     @Modifying
@@ -29,7 +29,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateUserPasswordById(String password, int id);
 
     @Modifying
-    @Query(value=("CALL anonymyze_user(:id)"), nativeQuery = true)
+    @Query(value = ("CALL anonymyze_user(:id)"), nativeQuery = true)
     void anonymizeUserById(@Param("id") int id);
 
 

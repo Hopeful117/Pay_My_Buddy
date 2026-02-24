@@ -5,7 +5,6 @@ import com.pay_my_buddy.payementsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +56,7 @@ public class UserServiceImpl implements UserService {
 
     // Mise à jour du mot de passe
     @Override
+    @Transactional
     public void updateUserPasswordById(String newPassword, int id) {
         Optional<User> user = userRepository.findUserById(id);
         if (user.isEmpty()) {
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         // Vérification si le mot de passe est le même
         if (passwordEncoder.matches(newPassword, user.get().getPassword())) {
             log.warn("New password is the same as the old password for user {}", id);
-            throw new IllegalArgumentException("New password must be different");
+            throw new IllegalArgumentException("Veuillez choisir un mot de passe différent");
         }
 
         userRepository.updateUserPasswordById(passwordEncoder.encode(newPassword), id);
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User>findUserByUsername(String username){
+    public Optional<User> findUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isEmpty()) {
             log.warn("User with username {} not found", username);

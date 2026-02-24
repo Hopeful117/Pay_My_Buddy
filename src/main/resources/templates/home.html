@@ -11,28 +11,31 @@
 <header th:replace="~{navbar :: navbar(currentPage='home')}"></header>
 
 <main>
-    <form th:action="@{/transfer}" method="post">
+    <form method="post" th:action="@{/transfer}">
         <label>
-        <select id="recipient" name="receiver">
-            <option value="" disabled selected>Sélectionner une relation</option>
-            <option  th:each="connection : ${connections}" th:value="${connection.id}" th:text="${connection.username}"></option>
-        </select>
+            <select id="recipient" name="receiver">
+                <option disabled selected value="">Sélectionner une relation</option>
+                <option th:each="connection : ${connections}" th:text="${connection.username}"
+                        th:value="${connection.id}"></option>
+            </select>
         </label>
         <label class="description">
-            <input type="text" name="description" placeholder="Description" id="description">
+            <input id="description" name="description" placeholder="Description" type="text">
         </label>
         <label class="input-money">
-            <input name="amount" type="number" min="0" step="0.01"  placeholder=0 id="amount">
+            <input id="amount" min="0" name="amount" placeholder=0 step="0.01" type="number">
             <span class="currency">€</span>
         </label>
 
 
-    <button class="validationBtn" type="submit">Payer</button>
+        <button class="validationBtn" type="submit">Payer</button>
     </form>
     <div th:replace="~{messages :: messages}"></div>
     <table>
         <thead>
-        <tr><th>Mes transactions</th></tr>
+        <tr>
+            <th>Mes transactions</th>
+        </tr>
         <tr>
             <th>Relations</th>
             <th>Description</th>

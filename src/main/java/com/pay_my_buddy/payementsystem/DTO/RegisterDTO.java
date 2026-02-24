@@ -1,6 +1,8 @@
 package com.pay_my_buddy.payementsystem.DTO;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -12,7 +14,7 @@ public class RegisterDTO {
     @Email(message = "Le format de l'email n'est pas valide")
     private String email;
 
-    @NotBlank(message="Le mot de passe ne peut pas être vide ou null")
-    @Size(min = 5 , max = 8)
+    @NotBlank(message = "Le mot de passe ne peut pas être vide ou null")
+    @Size(min = 5, max = 8)
     private String password;
 }

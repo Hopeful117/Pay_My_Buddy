@@ -20,13 +20,13 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public void transfer(User sender, User receiver, String description, BigDecimal amount) {
-        log.debug("Adding transaction from sender: {}, receiver: {},description{} amount: {}", sender, receiver,description, amount);
+        log.debug("Adding transaction from sender: {}, receiver: {},description{} amount: {}", sender, receiver, description, amount);
         try {
-            transactionRepository.addTransaction(sender.getId(), receiver.getId(),description, amount);
+            transactionRepository.addTransaction(sender.getId(), receiver.getId(), description, amount);
             log.info("Transaction added successfully");
 
         } catch (Exception exception) {
-            log.error("Failed to add transaction",exception);
+            log.error("Failed to add transaction", exception);
             throw new RuntimeException("Une erreur s'est produite lors de la transaction");
 
 
@@ -36,8 +36,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> getTransactionsByUserId(int userId) {
         log.debug("Retrieving transactions for userId: {}", userId);
-        List<Transaction>transactions= transactionRepository.getTransactionsByUserId(userId);
-        if ( transactions.isEmpty()) {
+        List<Transaction> transactions = transactionRepository.getTransactionsByUserId(userId);
+        if (transactions.isEmpty()) {
             log.info("No transactions found for userId: {}", userId);
         } else {
             log.info("Retrieved {} transactions for userId: {}", transactions.size(), userId);
@@ -46,14 +46,14 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getTransactionsSentByUserId(int userId){
-        return getTransactionsByUserId(userId).stream().filter(transaction -> transaction.getSender().getId()==userId).toList();
+    public List<Transaction> getTransactionsSentByUserId(int userId) {
+        return getTransactionsByUserId(userId).stream().filter(transaction -> transaction.getSender().getId() == userId).toList();
 
     }
 
     @Override
-    public List<Transaction>getTransactionsReceivedByUserId(int userId){
-        return getTransactionsByUserId(userId).stream().filter(transaction -> transaction.getReceiver().getId()==userId).toList();
+    public List<Transaction> getTransactionsReceivedByUserId(int userId) {
+        return getTransactionsByUserId(userId).stream().filter(transaction -> transaction.getReceiver().getId() == userId).toList();
 
     }
 

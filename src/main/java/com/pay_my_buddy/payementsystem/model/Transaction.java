@@ -7,13 +7,13 @@ import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="transaction")
+@Table(name = "transaction")
 @Data
 @RequiredArgsConstructor
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
     @ManyToOne

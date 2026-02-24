@@ -1,13 +1,10 @@
 package com.pay_my_buddy.payementsystem.controllers;
 
 import com.pay_my_buddy.payementsystem.DTO.RegisterDTO;
-import com.pay_my_buddy.payementsystem.model.User;
 import com.pay_my_buddy.payementsystem.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,7 +29,7 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute RegisterDTO registerDTO, BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes,Model model) {
+                               RedirectAttributes redirectAttributes, Model model) {
 
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()

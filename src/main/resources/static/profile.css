@@ -7,6 +7,7 @@ height:740px;
 min-height:100vh;
 margin-left:auto;
 margin-right:auto;
+flex-direction:column;
 }
 form{
 display:flex;
@@ -23,6 +24,7 @@ justify-content:flex-start;
 font-weight:500;
 font-family: 'Inter', sans-serif;
 font-size:20px;
+align-items:center;
 }
 input{
 border:none;
@@ -30,9 +32,12 @@ height:28px;
 font-family: 'Inter', sans-serif;
 font-weight:400;
 font-size:20px;
+width:fit-content;
+
 }
 input::placeholder{
 color:black;
+
 
 }
 
@@ -54,4 +59,15 @@ white-space: nowrap;
 }
 .mdp{
 width:636px;
+}
+
+
+.arrow {
+width:20px;
+height:20px;
+display:flex;
+align-items:center;
+justify-content:flex-end;
+font-size:10px;
+opacity:50%;
 }

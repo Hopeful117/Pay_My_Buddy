@@ -9,15 +9,15 @@
 
 <div th:fragment="messages">
     <!-- Liste d'erreurs métier -->
-    <div th:if="${errors != null and !#lists.isEmpty(errors)}"
-         class="alert alert-error">
+    <div class="alert alert-error"
+         th:if="${errors != null and !#lists.isEmpty(errors)}">
         <ul>
             <li class="error" th:each="err : ${errors}" th:text="${err}"></li>
         </ul>
     </div>
 
     <!-- Message de succès -->
-    <div th:if="${success != null}" class="alert alert-success">
+    <div class="alert alert-success" th:if="${success != null}">
         <p class="success" th:text="${success}"></p>
     </div>
 </div>
