@@ -34,8 +34,8 @@ public class TransferController {
 
 
     @GetMapping("/home")
-    public String getTransferPage(Model model, Authentication authentification) {
-        String email = authentification.getName();
+    public String getTransferPage(Model model, Authentication authentication) {
+        String email = authentication.getName();
         Optional<User> user = userService.findUserByEmail(email);
         if(user.isEmpty()) {
             return "redirect:/login";
@@ -60,7 +60,7 @@ public class TransferController {
         }
         try {
             Optional<User> sender = userService.findUserByEmail(principal.getName());
-            transactionService.transfer(sender.get(), transferDTO.getReceiver(), transferDTO.getDescription(), transferDTO.getAmount());
+            sender.ifPresent(user -> transactionService.transfer(user, transferDTO.getReceiver(), transferDTO.getDescription(), transferDTO.getAmount()));
             redirectAttributes.addFlashAttribute("success",
                     "Transfert effectué avec succès !");
 
