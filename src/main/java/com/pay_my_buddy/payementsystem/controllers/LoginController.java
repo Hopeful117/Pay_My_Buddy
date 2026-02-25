@@ -23,12 +23,7 @@ public class LoginController {
         log.info("Login page accessed");
         return "login";
     }
-    /**
-     * Gère les requêtes POST pour traiter la connexion de l'utilisateur.
-     *
-     * @param authentication L'objet d'authentification contenant les détails de l'utilisateur connecté.
-     * @return Un message indiquant le succès de la connexion.
-     */
+
 
 }
 

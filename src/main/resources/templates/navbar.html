@@ -11,7 +11,7 @@
     <nav>
         <a class="nav-link" th:classappend="${currentPage == 'home'} ? 'active'" th:href="@{/home}">Transférer</a>
         <a class="nav-link" th:classappend="${currentPage == 'profile'} ? 'active'" th:href="@{/profile}">Profil</a>
-        <a class="nav-link" th:classappend="${currentPage == 'relations'} ? 'active'" th:href="@{relations}">Ajouter
+        <a class="nav-link" th:classappend="${currentPage == 'relations'} ? 'active'" th:href="@{/relations}">Ajouter
             relation</a>
         <a class="nav-link" th:href="@{/logout}">Se déconnecter</a>
     </nav>

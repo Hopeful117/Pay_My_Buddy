@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/profile.css}">
 </head>
 <body>
-<header th:replace="~{navbar :: navbar(currentPage='profile')}"></header>
+<header th:replace="~{navbar :: navbar(currentPage=${currentPage})}"></header>
 <main>
     <form method="post" th:action="@{/profile}" th:object="${registerDTO}">
 

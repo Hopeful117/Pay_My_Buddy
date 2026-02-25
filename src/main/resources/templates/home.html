@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/messages.css}">
 </head>
 <body>
-<header th:replace="~{navbar :: navbar(currentPage='home')}"></header>
+<header th:replace="~{navbar :: navbar(currentPage=${currentPage})}"></header>
 
 <main>
     <form method="post" th:action="@{/transfer}">
