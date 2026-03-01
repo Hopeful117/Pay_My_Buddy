@@ -3,6 +3,7 @@ package com.pay_my_buddy.payementsystem.service;
 import com.pay_my_buddy.payementsystem.model.Transaction;
 import com.pay_my_buddy.payementsystem.model.User;
 import com.pay_my_buddy.payementsystem.repository.TransactionRepository;
+import com.pay_my_buddy.payementsystem.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,9 @@ class TransactionServiceTest {
 
     @Mock
     private TransactionRepository transactionRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
 
     @InjectMocks
@@ -57,6 +61,7 @@ class TransactionServiceTest {
 
         lenient().when(transactionRepository.getTransactionsBySender(any(User.class)))
                 .thenReturn(transactions);
+        lenient().when(userRepository.existsByUsername(any(String.class))).thenReturn(true);
 
     }
 
@@ -146,6 +151,7 @@ class TransactionServiceTest {
         BigDecimal amount = new BigDecimal("10.00");
 
 
+
         when(transactionRepository.save(any(Transaction.class)))
                 .thenThrow(new RuntimeException("Database error"));
 
@@ -160,4 +166,81 @@ class TransactionServiceTest {
         verify(transactionRepository).save(any(Transaction.class));
     }
 
+
+    @Test
+void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist(){
+        User sender = new User("john", "john@mail.com", "password");
+        sender.setId(1);
+
+        User receiver = new User("jane", "jane@mail.com", "password");
+        receiver.setId(2);
+
+        BigDecimal amount = new BigDecimal("10.00");
+
+
+
+        when(userRepository.existsByUsername(any(String.class))).thenReturn(false);
+        IllegalArgumentException exception= assertThrows(IllegalArgumentException.class,()->transactionService.transfer(sender, receiver, "Test", amount));
+        assertEquals("Utilisateur non trouvé",
+                exception.getMessage());
+
+
+
+    }
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenDescriptionIsEmpty(){
+        User sender = new User("john", "john@mail.com", "password");
+        sender.setId(1);
+
+        User receiver = new User("jane", "jane@mail.com", "password");
+        receiver.setId(2);
+
+        BigDecimal amount = new BigDecimal("10.00");
+
+
+
+
+        IllegalArgumentException exception= assertThrows(IllegalArgumentException.class,()->transactionService.transfer(sender, receiver, "", amount));
+        assertEquals("La description ne peut pas être vide",
+                exception.getMessage());
+
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenAmountIsNull(){
+        User sender = new User("john", "john@mail.com", "password");
+        sender.setId(1);
+
+        User receiver = new User("jane", "jane@mail.com", "password");
+        receiver.setId(2);
+
+        BigDecimal amount = null;
+
+
+
+
+        IllegalArgumentException exception= assertThrows(IllegalArgumentException.class,()->transactionService.transfer(sender, receiver, "Test", amount));
+        assertEquals("Le montant ne peut pas être null",
+                exception.getMessage());
+
+
+    }
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenAmountIsZero(){
+        User sender = new User("john", "john@mail.com", "password");
+        sender.setId(1);
+
+        User receiver = new User("jane", "jane@mail.com", "password");
+        receiver.setId(2);
+
+        BigDecimal amount = new BigDecimal(0);
+
+
+
+
+        IllegalArgumentException exception= assertThrows(IllegalArgumentException.class,()->transactionService.transfer(sender, receiver, "Test", amount));
+        assertEquals("Le montant doit être supérieur à 0",
+                exception.getMessage());
+
+    }
     }

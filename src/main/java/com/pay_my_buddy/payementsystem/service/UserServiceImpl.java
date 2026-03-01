@@ -44,10 +44,9 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // Mise à jour du mot de passe
     @Override
     @Transactional
-    public void updateUser(RegisterDTO registerDTO) {
+    public void updateUser(final RegisterDTO registerDTO) {
         Optional<User> optionalUser = userRepository.findByEmail(registerDTO.getEmail());
         if (optionalUser.isEmpty()) {
             throw new IllegalArgumentException("User not found");
