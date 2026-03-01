@@ -21,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -33,17 +32,19 @@ public class TransferController {
 
     @GetMapping("/home")
     public String getTransferPage(Model model, Authentication authentication) {
-        String email = authentication.getName();
-        Optional<User> user = userService.findUserByEmail(email);
-        if (user.isEmpty()) {
+        try {
+            String email = authentication.getName();
+            User user = userService.getUserByEmail(email);
+            List<User> user_connections = user.getConnections();
+            List<Transaction> transactions = transactionService.getTransactionsSentByUser(user);
+            model.addAttribute("transactions", transactions);
+            model.addAttribute("connections", user_connections);
+            model.addAttribute("currentPage", "home");
+            return "home";
+        } catch (Exception e) {
             return "redirect:/login";
+
         }
-        List<User> user_connections = user.get().getConnections();
-        List<Transaction> transactions = transactionService.getTransactionsSentByUserId(user.get().getId());
-        model.addAttribute("transactions", transactions);
-        model.addAttribute("connections", user_connections);
-        model.addAttribute("currentPage", "home");
-        return "home";
     }
 
     @PostMapping("/transfer")
@@ -57,8 +58,8 @@ public class TransferController {
             return "redirect:/home";
         }
         try {
-            Optional<User> sender = userService.findUserByEmail(principal.getName());
-            sender.ifPresent(user -> transactionService.transfer(user, transferDTO.getReceiver(), transferDTO.getDescription(), transferDTO.getAmount()));
+            User sender = userService.getUserByEmail(principal.getName());
+            transactionService.transfer(sender, transferDTO.getReceiver(), transferDTO.getDescription(), transferDTO.getAmount());
             redirectAttributes.addFlashAttribute("success",
                     "Transfert effectué avec succès !");
 

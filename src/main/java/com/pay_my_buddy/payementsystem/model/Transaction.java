@@ -2,14 +2,18 @@ package com.pay_my_buddy.payementsystem.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "transaction")
-@Data
+@Table(name = "transactions")
+@Getter
+@Setter
 @RequiredArgsConstructor
+
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +27,13 @@ public class Transaction {
     @JoinColumn(name = "receiver", nullable = false)
     private User receiver;
 
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
+
+    @Column(name = "description", nullable = false)
     private String description;
 
-    public Transaction(User sender, User receiver, BigDecimal amount, String description) {
+    public Transaction(User sender, User receiver, String description, BigDecimal amount) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;

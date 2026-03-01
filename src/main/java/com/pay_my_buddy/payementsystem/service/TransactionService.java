@@ -10,9 +10,9 @@ import java.util.List;
 public interface TransactionService {
     void transfer(User sender, User receiver, String description, BigDecimal amount);
 
-    List<Transaction> getTransactionsByUserId(int userId);
+    List<Transaction> getTransactionsByUser(User user);
 
-    List<Transaction> getTransactionsSentByUserId(int userId);
+    List<Transaction> getTransactionsSentByUser(User user);
 
-    List<Transaction> getTransactionsReceivedByUserId(int userId);
+    List<Transaction> getTransactionsReceivedByUserId(User user);
 }

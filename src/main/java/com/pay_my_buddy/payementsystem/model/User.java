@@ -2,13 +2,18 @@ package com.pay_my_buddy.payementsystem.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Entity
-@Table(name = "user")
-@Data
+@Table(name = "users")
+@Getter
+@Setter
+@Accessors(chain = true)
 @RequiredArgsConstructor
 public class User {
 
@@ -27,22 +32,21 @@ public class User {
     private String password;
 
     @Column(name = "is_active", nullable = false)
-    private Boolean isActive;
+    private Boolean isActive = true;
 
     @ManyToMany
     @JoinTable(
-            name = "user_connection",
+            name = "user_connections",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "connection_id")
     )
     private List<User> connections;
 
 
-    public User(String username, String email, String password, Boolean isActive) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.isActive = isActive;
     }
 
 }

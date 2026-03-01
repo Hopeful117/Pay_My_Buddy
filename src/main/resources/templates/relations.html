@@ -10,15 +10,16 @@
 <body>
 <header th:replace="~{navbar :: navbar(currentPage=${currentPage})}"></header>
 <main>
-    <form>
+    <form method="post" th:action="@{/relations}">
 
         <label>
             <span>Chercher une relation</span>
-            <input type="email" placeholder="Saisir une adresse mail">
+            <input placeholder="Saisir une adresse mail" type="email" th:name="email">
 
         </label>
         <button class="AddBtn" type="submit">Ajouter</button>
     </form>
+    <div th:replace="~{messages :: messages}"></div>
 </main>
 </body>
 </html>

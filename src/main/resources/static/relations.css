@@ -8,6 +8,7 @@ min-height:100vh;
 font-family: 'Inter', sans-serif;
 font-size:20px;
 font-weight:500;
+flex-direction:column;
 }
 form{
 display:flex;

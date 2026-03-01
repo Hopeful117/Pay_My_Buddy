@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -27,24 +26,26 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String getProfilePage(Model model, Authentication authentication) {
+
         String email = authentication.getName();
-        Optional<User> user = userService.findUserByEmail(email);
-        if (user.isEmpty()) {
+        try {
+            User user = userService.getUserByEmail(email);
+            RegisterDTO registerDTO = new RegisterDTO();
+            registerDTO.setUsername(user.getUsername());
+            registerDTO.setEmail(user.getEmail());
+            model.addAttribute("currentPage", "profile");
+            model.addAttribute("registerDTO", registerDTO);
+
+            return ("profile");
+        } catch (Exception e) {
             return "redirect:/login";
         }
-        RegisterDTO registerDTO = new RegisterDTO();
-        registerDTO.setUsername(user.get().getUsername());
-        registerDTO.setEmail(user.get().getEmail());
-        model.addAttribute("currentPage", "profile");
-        model.addAttribute("registerDTO", registerDTO);
-
-        return ("profile");
 
 
     }
 
     @PostMapping("/profile")
-    public String modifyProfile(@Valid @ModelAttribute RegisterDTO registerDTO ,Model model, Authentication authentication, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String modifyProfile(@Valid @ModelAttribute RegisterDTO registerDTO, Model model, Authentication authentication, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -53,13 +54,12 @@ public class ProfileController {
             return "profile";
         }
         try {
-            Optional<User> user = userService.findUserByEmail(authentication.getName());
-            if (user.isPresent()) {
-                userService.updateUserPasswordById(registerDTO.getPassword(), user.get().getId());
+            User user = userService.getUserByEmail(authentication.getName());
+            userService.updateUser(registerDTO);
 
-                redirectAttributes.addFlashAttribute("success",
-                        "Mot de passe changé avec succès !");
-            }
+            redirectAttributes.addFlashAttribute("success",
+                    "Mot de passe changé avec succès !");
+
             return "redirect:/profile";
 
 

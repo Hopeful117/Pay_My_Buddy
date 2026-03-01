@@ -14,13 +14,13 @@
 
 
         <label><span>Username</span>
-            <input readonly required th:attr="size=${#strings.length(registerDTO.username)}" th:field="*{username}"
+            <input required th:attr="size=${#strings.length(registerDTO.username)}" th:field="*{username}"
                    type="text"><span class="arrow">></span>
         </label>
 
 
         <label><span>Mail</span>
-            <input readonly required th:attr="size=${#strings.length(registerDTO.email)}" th:field="*{email}"
+            <input required th:attr="size=${#strings.length(registerDTO.email)}" th:field="*{email}"
                    type="email"><span
                     class="arrow">></span>
         </label>
@@ -31,8 +31,6 @@
                     class="arrow">></span>
             <button class="modificationBtn" type="submit">Modifier</button>
         </label>
-
-
 
 
     </form>
