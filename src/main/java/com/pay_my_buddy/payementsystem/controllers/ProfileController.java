@@ -1,6 +1,7 @@
 package com.pay_my_buddy.payementsystem.controllers;
 
 import com.pay_my_buddy.payementsystem.DTO.RegisterDTO;
+import com.pay_my_buddy.payementsystem.DTO.UpdateDTO;
 import com.pay_my_buddy.payementsystem.model.User;
 import com.pay_my_buddy.payementsystem.service.UserService;
 import jakarta.validation.Valid;
@@ -30,11 +31,11 @@ public class ProfileController {
         String email = authentication.getName();
         try {
             User user = userService.getUserByEmail(email);
-            RegisterDTO registerDTO = new RegisterDTO();
-            registerDTO.setUsername(user.getUsername());
-            registerDTO.setEmail(user.getEmail());
+            UpdateDTO updateDTO = new UpdateDTO();
+            updateDTO.setUsername(user.getUsername());
+            updateDTO.setEmail(user.getEmail());
             model.addAttribute("currentPage", "profile");
-            model.addAttribute("registerDTO", registerDTO);
+            model.addAttribute("updateDTO", updateDTO);
 
             return ("profile");
         } catch (Exception e) {
@@ -45,7 +46,7 @@ public class ProfileController {
     }
 
     @PostMapping("/profile")
-    public String modifyProfile(@Valid @ModelAttribute RegisterDTO registerDTO, Model model, Authentication authentication, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String modifyProfile(@Valid @ModelAttribute UpdateDTO updateDTO, Model model, Authentication authentication, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -55,10 +56,11 @@ public class ProfileController {
         }
         try {
             User user = userService.getUserByEmail(authentication.getName());
-            userService.updateUser(registerDTO);
+            final int id =user.getId();
+            userService.updateUser(id,updateDTO);
 
             redirectAttributes.addFlashAttribute("success",
-                    "Mot de passe changé avec succès !");
+                    "Profil mis à jour avec succès !");
 
             return "redirect:/profile";
 

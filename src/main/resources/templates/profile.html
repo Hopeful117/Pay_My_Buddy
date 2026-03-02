@@ -10,24 +10,24 @@
 <body>
 <header th:replace="~{navbar :: navbar(currentPage=${currentPage})}"></header>
 <main>
-    <form method="post" th:action="@{/profile}" th:object="${registerDTO}">
+    <form method="post" th:action="@{/profile}" th:object="${updateDTO}">
 
 
         <label><span>Username</span>
-            <input required th:attr="size=${#strings.length(registerDTO.username)}" th:field="*{username}"
+            <input required th:attr="size=${#strings.length(updateDTO.username)}" th:field="*{username}"
                    type="text"><span class="arrow">></span>
         </label>
 
 
         <label><span>Mail</span>
-            <input required th:attr="size=${#strings.length(registerDTO.email)}" th:field="*{email}"
+            <input required th:attr="size=${#strings.length(updateDTO.email)}" th:field="*{email}"
                    type="email"><span
                     class="arrow">></span>
         </label>
 
 
         <label class="mdp"> <span>Mot de passe</span>
-            <input placeholder="mot de passe" required th:field="*{password}" type="password"><span
+            <input placeholder="mot de passe" th:field="*{password}" type="password"><span
                     class="arrow">></span>
             <button class="modificationBtn" type="submit">Modifier</button>
         </label>

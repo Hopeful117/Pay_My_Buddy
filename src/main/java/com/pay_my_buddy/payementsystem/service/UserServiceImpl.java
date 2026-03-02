@@ -1,6 +1,7 @@
 package com.pay_my_buddy.payementsystem.service;
 
 import com.pay_my_buddy.payementsystem.DTO.RegisterDTO;
+import com.pay_my_buddy.payementsystem.DTO.UpdateDTO;
 import com.pay_my_buddy.payementsystem.model.User;
 import com.pay_my_buddy.payementsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -18,10 +19,10 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // pour hasher les mots de passe
+    private final PasswordEncoder passwordEncoder;
 
 
-    // Création d'un utilisateur
+
     @Override
     public void createUser(final String username, final String email, final String password) {
 
@@ -36,37 +37,40 @@ public class UserServiceImpl implements UserService {
         final String hash = passwordEncoder.encode(password); // Hash du mot de passe
 
         final User newUser = new User(username, email, hash);
-        // Hash du mot de passe avant sauvegarde
 
-        userRepository.save(newUser);
-        log.info("User created successfully: {}", username);
+        try {
+            userRepository.save(newUser);
+            log.info("User created successfully: {}", username);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Une erreur s'est produite lors de la création de l'utilisateur");
+        }
+
 
     }
 
 
     @Override
     @Transactional
-    public void updateUser(final RegisterDTO registerDTO) {
-        Optional<User> optionalUser = userRepository.findByEmail(registerDTO.getEmail());
-        if (optionalUser.isEmpty()) {
-            throw new IllegalArgumentException("User not found");
-        }
+    public void updateUser(final int id, final UpdateDTO updateDTO) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        final User user = optionalUser.get();
-        if (!registerDTO.getEmail().equals(user.getEmail())) {
-            if (userRepository.existsByEmail(registerDTO.getEmail())) {
+        if (!updateDTO.getEmail().equals(user.getEmail())) {
+            if (userRepository.existsByEmail(updateDTO.getEmail())) {
                 throw new IllegalArgumentException("Veuillez utiliser un email différent");
             }
-            user.setEmail(registerDTO.getEmail());
+            user.setEmail(updateDTO.getEmail());
         }
-        if (!registerDTO.getUsername().equals(user.getUsername())) {
-            if (userRepository.existsByUsername(registerDTO.getUsername())) {
+        if (!updateDTO.getUsername().equals(user.getUsername())) {
+            if (userRepository.existsByUsername(updateDTO.getUsername())) {
                 throw new IllegalArgumentException("Le nom d'utilisateur est déjà utilisé");
             }
-            user.setUsername(registerDTO.getUsername());
+            user.setUsername(updateDTO.getUsername());
 
         }
-        user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        if(!updateDTO.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(updateDTO.getPassword()));
+        }
 
 
         userRepository.save(user);
