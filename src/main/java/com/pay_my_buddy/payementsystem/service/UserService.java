@@ -1,6 +1,5 @@
 package com.pay_my_buddy.payementsystem.service;
 
-import com.pay_my_buddy.payementsystem.DTO.RegisterDTO;
 import com.pay_my_buddy.payementsystem.DTO.UpdateDTO;
 import com.pay_my_buddy.payementsystem.model.User;
 
@@ -10,7 +9,7 @@ public interface UserService {
     void createUser(String username, String email, String password);
 
 
-    void updateUser( int id, UpdateDTO updateDTO);
+    void updateUser(int id, UpdateDTO updateDTO);
 
     User getUserByEmail(String email);
 

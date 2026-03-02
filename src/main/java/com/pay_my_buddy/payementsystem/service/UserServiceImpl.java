@@ -1,6 +1,5 @@
 package com.pay_my_buddy.payementsystem.service;
 
-import com.pay_my_buddy.payementsystem.DTO.RegisterDTO;
 import com.pay_my_buddy.payementsystem.DTO.UpdateDTO;
 import com.pay_my_buddy.payementsystem.model.User;
 import com.pay_my_buddy.payementsystem.repository.UserRepository;
@@ -20,7 +19,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
 
 
     @Override
@@ -68,7 +66,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(updateDTO.getUsername());
 
         }
-        if(!updateDTO.getPassword().isBlank()) {
+        if (!updateDTO.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(updateDTO.getPassword()));
         }
 
@@ -118,12 +116,12 @@ public class UserServiceImpl implements UserService {
         final User friend = userRepository.findById(friendId)
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
 
-        try{
-        user.getConnections().add(friend);
-        friend.getConnections().add(user);
+        try {
+            user.getConnections().add(friend);
+            friend.getConnections().add(user);
 
-        userRepository.saveAll(Set.of(user, friend));
-        log.info("Relation {} added successfully to user account", friend.getUsername());
+            userRepository.saveAll(Set.of(user, friend));
+            log.info("Relation {} added successfully to user account", friend.getUsername());
         } catch (Exception e) {
             throw new RuntimeException("Une erreur s'est produite lors de l'ajout de la relation");
         }

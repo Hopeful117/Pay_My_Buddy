@@ -1,7 +1,6 @@
 package com.pay_my_buddy.payementsystem.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

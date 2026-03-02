@@ -24,15 +24,15 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public void transfer(User sender, User receiver, String description, BigDecimal amount) {
         log.debug("Adding transaction from sender: {}, receiver: {},description{} amount: {}", sender, receiver, description, amount);
-        if(!userRepository.existsByUsername(sender.getUsername())){
+        if (!userRepository.existsByUsername(sender.getUsername())) {
             throw new IllegalArgumentException("Utilisateur non trouvé");
 
         }
-        if(!userRepository.existsByUsername(receiver.getUsername())){
+        if (!userRepository.existsByUsername(receiver.getUsername())) {
             throw new IllegalArgumentException(("Utilisateur non trouvé"));
         }
 
-        if(description.isEmpty()){
+        if (description.isEmpty()) {
             throw new IllegalArgumentException("La description ne peut pas être vide");
         }
 

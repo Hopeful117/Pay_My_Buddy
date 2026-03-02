@@ -36,7 +36,7 @@ class TransactionServiceTest {
     private TransactionServiceImpl transactionService;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
 
@@ -70,7 +70,6 @@ class TransactionServiceTest {
         User sender = new User("john", "john@mail.com", "password");
 
 
-
         List<Transaction> result = transactionService.getTransactionsByUser(sender);
 
 
@@ -79,36 +78,37 @@ class TransactionServiceTest {
     }
 
     @Test
-    void shouldReturnOnlyTransactionWhereUserIsSender(){
+    void shouldReturnOnlyTransactionWhereUserIsSender() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
-        List<Transaction> result= transactionService.getTransactionsSentByUser(sender);
-        assertEquals(1,result.size());
-
+        List<Transaction> result = transactionService.getTransactionsSentByUser(sender);
+        assertEquals(1, result.size());
 
 
     }
+
     @Test
-    void shouldReturnOnlyTransactionWhereUserIsReceiver(){
+    void shouldReturnOnlyTransactionWhereUserIsReceiver() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
-        List<Transaction> result= transactionService.getTransactionsReceivedByUserId(sender);
-        assertEquals(1,result.size());
-
+        List<Transaction> result = transactionService.getTransactionsReceivedByUserId(sender);
+        assertEquals(1, result.size());
 
 
     }
+
     @Test
-    void shouldReturnEmptyListIfNoTransactionExist(){
+    void shouldReturnEmptyListIfNoTransactionExist() {
         User sender = new User("john", "john@mail.com", "password");
         when(transactionRepository.getTransactionsBySender(any(User.class))).thenReturn(List.of());
 
         List<Transaction> result = transactionService.getTransactionsByUser(sender);
-        assertEquals(0,result.size());
+        assertEquals(0, result.size());
         verify(transactionRepository).getTransactionsBySender(any(User.class));
 
 
     }
+
     @ParameterizedTest
     @CsvSource({
             "10, 10.00",
@@ -117,8 +117,7 @@ class TransactionServiceTest {
             "10.125, 10.13",
             "99.999, 100.00"
     })
-
-    void shouldAddTransactionAndNormalizeAmount(String input, String expected){
+    void shouldAddTransactionAndNormalizeAmount(String input, String expected) {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
 
@@ -139,6 +138,7 @@ class TransactionServiceTest {
 
         assertEquals(expectedAmount, savedTransaction.getAmount());
     }
+
     @Test
     void shouldThrowRuntimeExceptionWhenRepositoryFails() {
 
@@ -149,7 +149,6 @@ class TransactionServiceTest {
         receiver.setId(2);
 
         BigDecimal amount = new BigDecimal("10.00");
-
 
 
         when(transactionRepository.save(any(Transaction.class)))
@@ -168,7 +167,7 @@ class TransactionServiceTest {
 
 
     @Test
-void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist(){
+    void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
 
@@ -178,17 +177,16 @@ void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist(){
         BigDecimal amount = new BigDecimal("10.00");
 
 
-
         when(userRepository.existsByUsername(any(String.class))).thenReturn(false);
-        IllegalArgumentException exception= assertThrows(IllegalArgumentException.class,()->transactionService.transfer(sender, receiver, "Test", amount));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> transactionService.transfer(sender, receiver, "Test", amount));
         assertEquals("Utilisateur non trouvé",
                 exception.getMessage());
 
 
-
     }
+
     @Test
-    void shouldThrowIllegalArgumentExceptionWhenDescriptionIsEmpty(){
+    void shouldThrowIllegalArgumentExceptionWhenDescriptionIsEmpty() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
 
@@ -198,16 +196,14 @@ void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist(){
         BigDecimal amount = new BigDecimal("10.00");
 
 
-
-
-        IllegalArgumentException exception= assertThrows(IllegalArgumentException.class,()->transactionService.transfer(sender, receiver, "", amount));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> transactionService.transfer(sender, receiver, "", amount));
         assertEquals("La description ne peut pas être vide",
                 exception.getMessage());
 
     }
 
     @Test
-    void shouldThrowIllegalArgumentExceptionWhenAmountIsNull(){
+    void shouldThrowIllegalArgumentExceptionWhenAmountIsNull() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
 
@@ -217,16 +213,15 @@ void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist(){
         BigDecimal amount = null;
 
 
-
-
-        IllegalArgumentException exception= assertThrows(IllegalArgumentException.class,()->transactionService.transfer(sender, receiver, "Test", amount));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> transactionService.transfer(sender, receiver, "Test", amount));
         assertEquals("Le montant ne peut pas être null",
                 exception.getMessage());
 
 
     }
+
     @Test
-    void shouldThrowIllegalArgumentExceptionWhenAmountIsZero(){
+    void shouldThrowIllegalArgumentExceptionWhenAmountIsZero() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
 
@@ -236,11 +231,9 @@ void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist(){
         BigDecimal amount = new BigDecimal(0);
 
 
-
-
-        IllegalArgumentException exception= assertThrows(IllegalArgumentException.class,()->transactionService.transfer(sender, receiver, "Test", amount));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> transactionService.transfer(sender, receiver, "Test", amount));
         assertEquals("Le montant doit être supérieur à 0",
                 exception.getMessage());
 
     }
-    }
+}

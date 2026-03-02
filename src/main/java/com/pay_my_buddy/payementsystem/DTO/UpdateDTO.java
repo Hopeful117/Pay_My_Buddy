@@ -8,13 +8,12 @@ import lombok.Data;
 public class UpdateDTO {
 
 
+    @NotBlank(message = "Le Username ne peut pas être vide ou null")
+    private String username;
 
-        @NotBlank(message = "Le Username ne peut pas être vide ou null")
-        private String username;
+    @NotBlank(message = "L'email ne peut pas être vide ou null")
+    @Email(message = "Le format de l'email n'est pas valide")
+    private String email;
 
-        @NotBlank(message = "L'email ne peut pas être vide ou null")
-        @Email(message = "Le format de l'email n'est pas valide")
-        private String email;
-
-        private String password;
+    private String password;
 }

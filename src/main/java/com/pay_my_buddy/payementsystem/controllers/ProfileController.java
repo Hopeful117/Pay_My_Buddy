@@ -1,6 +1,5 @@
 package com.pay_my_buddy.payementsystem.controllers;
 
-import com.pay_my_buddy.payementsystem.DTO.RegisterDTO;
 import com.pay_my_buddy.payementsystem.DTO.UpdateDTO;
 import com.pay_my_buddy.payementsystem.model.User;
 import com.pay_my_buddy.payementsystem.service.UserService;
@@ -56,8 +55,8 @@ public class ProfileController {
         }
         try {
             User user = userService.getUserByEmail(authentication.getName());
-            final int id =user.getId();
-            userService.updateUser(id,updateDTO);
+            final int id = user.getId();
+            userService.updateUser(id, updateDTO);
 
             redirectAttributes.addFlashAttribute("success",
                     "Profil mis à jour avec succès !");

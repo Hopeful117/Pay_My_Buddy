@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class RelationController {
-    private final  UserService userService;
+    private final UserService userService;
 
     @GetMapping("/relations")
     public String getRelationPage(Model model) {
