@@ -16,10 +16,23 @@ import java.util.List;
 @Service
 @Slf4j
 @AllArgsConstructor
+/**
+ * Service implementation for handling transactions between users.
+ */
 public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
     private UserRepository userRepository;
 
+
+    /**
+     * Transfers a specified amount from the sender to the receiver with a description.
+     *
+     * @param sender      the user who is sending the amount
+     * @param receiver    the user who is receiving the amount
+     * @param description a description of the transaction
+     * @param amount      the amount to be transferred
+     * @throws IllegalArgumentException if the sender or receiver does not exist, if the description is empty, if the amount is null or if the amount is not greater than 0.
+     */
     @Override
     @Transactional
     public void transfer(User sender, User receiver, String description, BigDecimal amount) {
@@ -57,24 +70,49 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
+
+    /**
+     * Retrieves a list of transactions associated with a specific user.
+     *
+     * @param user the user for whom to retrieve transactions
+     * @return a list of transactions associated with the specified user
+     */
     @Override
     public List<Transaction> getTransactionsByUser(User user) {
 
         return transactionRepository.getTransactionsBySender(user);
     }
 
+    /**
+     * Retrieves a list of transactions sent by a specific user.
+     *
+     * @param user the user for whom to retrieve sent transactions
+     * @return a list of transactions sent by the specified user
+     */
     @Override
     public List<Transaction> getTransactionsSentByUser(User user) {
         return getTransactionsByUser(user).stream().filter(transaction -> transaction.getSender().getId() == user.getId()).toList();
 
     }
 
+    /**
+     * Retrieves a list of transactions received by a specific user.
+     *
+     * @param user the user for whom to retrieve received transactions
+     * @return a list of transactions received by the specified user
+     */
     @Override
     public List<Transaction> getTransactionsReceivedByUserId(User user) {
         return getTransactionsByUser(user).stream().filter(transaction -> transaction.getReceiver().getId() == user.getId()).toList();
 
     }
 
+    /**
+     * Normalizes the amount by setting the scale to 2 decimal places and rounding half up.
+     *
+     * @param amount the amount to be normalized
+     * @return the normalized amount
+     */
     private BigDecimal normalizeAmount(BigDecimal amount) {
         return amount.setScale(2, RoundingMode.HALF_UP);
     }

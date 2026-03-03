@@ -6,7 +6,9 @@ import com.pay_my_buddy.payementsystem.model.User;
 import java.math.BigDecimal;
 import java.util.List;
 
-
+/**
+ * Service interface for handling transactions between users.
+ */
 public interface TransactionService {
     void transfer(User sender, User receiver, String description, BigDecimal amount);
 

@@ -9,18 +9,28 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 @Slf4j
 @AllArgsConstructor
+
+/**
+ * Service implementation for managing user-related operations.
+ */
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
 
+    /**
+     * Creates a new user with the provided username, email, and password.
+     *
+     * @param username the username of the new user
+     * @param email    the email of the new user
+     * @param password the password of the new user
+     */
     @Override
     public void createUser(final String username, final String email, final String password) {
 
@@ -46,11 +56,16 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
+    /**
+     * Updates the user information based on the provided UpdateDTO.
+     *
+     * @param id        the ID of the user to update
+     * @param updateDTO the DTO containing the updated user information
+     */
     @Override
     @Transactional
     public void updateUser(final int id, final UpdateDTO updateDTO) {
-        User user = userRepository.findById(id)
+        final User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         if (!updateDTO.getEmail().equals(user.getEmail())) {
@@ -70,35 +85,51 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(updateDTO.getPassword()));
         }
 
-
-        userRepository.save(user);
-
+        try {
+            userRepository.save(user);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Une erreur s'est produite lors de la mise à jour de l'utilisateur");
+        }
 
         log.info("User updated successfully for user {}", user.getId());
     }
 
-    // Récupération d'un utilisateur par email
+    /**
+     * Retrieves a user by their email.
+     *
+     * @param email the email of the user to retrieve
+     * @return the User object corresponding to the provided email
+     */
     @Override
     public User getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email)
+        final User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         log.info("User found: {}", user.getEmail());
         return user;
     }
 
+    /**
+     * Retrieves a user by their username.
+     *
+     * @param username the username of the user to retrieve
+     * @return the User object corresponding to the provided username
+     */
     @Override
-    public Optional<User> findUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            log.warn("User with username {} not found", username);
-            throw new IllegalArgumentException("User not found");
-        }
-        log.info("User found: {}", user.get().getUsername());
+    public User getUserByUsername(String username) {
+        final User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        log.info("User found: {}", user.getUsername());
         return user;
 
     }
 
+    /**
+     * Adds a connection between two users.
+     *
+     * @param userId   the ID of the user who wants to add a connection
+     * @param friendId the ID of the user to be added as a connection
+     */
     @Override
     @Transactional
     public void addConnection(int userId, int friendId) {

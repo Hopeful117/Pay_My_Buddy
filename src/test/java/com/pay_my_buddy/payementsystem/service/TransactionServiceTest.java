@@ -22,6 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test class for TransactionServiceImpl, using Mockito to mock dependencies and JUnit 5 for testing.
+ */
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
 
@@ -65,6 +68,9 @@ class TransactionServiceTest {
 
     }
 
+    /**
+     * Test to verify that the service returns all transactions for a given user.
+     */
     @Test
     void shouldReturnAllTransaction() {
         User sender = new User("john", "john@mail.com", "password");
@@ -77,6 +83,9 @@ class TransactionServiceTest {
         verify(transactionRepository).getTransactionsBySender(any(User.class));
     }
 
+    /**
+     * Test to verify that the service returns only transactions where the user is the sender.
+     */
     @Test
     void shouldReturnOnlyTransactionWhereUserIsSender() {
         User sender = new User("john", "john@mail.com", "password");
@@ -87,6 +96,9 @@ class TransactionServiceTest {
 
     }
 
+    /**
+     * Test to verify that the service returns only transactions where the user is the receiver.
+     */
     @Test
     void shouldReturnOnlyTransactionWhereUserIsReceiver() {
         User sender = new User("john", "john@mail.com", "password");
@@ -97,6 +109,9 @@ class TransactionServiceTest {
 
     }
 
+    /**
+     * Test to verify that the service returns an empty list when no transactions exist for a given user.
+     */
     @Test
     void shouldReturnEmptyListIfNoTransactionExist() {
         User sender = new User("john", "john@mail.com", "password");
@@ -109,6 +124,10 @@ class TransactionServiceTest {
 
     }
 
+    /**
+     * Parameterized test to verify that the service correctly normalizes the transaction amount to two decimal places.
+     * It tests various input amounts and their expected normalized values.
+     */
     @ParameterizedTest
     @CsvSource({
             "10, 10.00",
@@ -139,6 +158,10 @@ class TransactionServiceTest {
         assertEquals(expectedAmount, savedTransaction.getAmount());
     }
 
+    /**
+     * Test to verify that the service throws a RuntimeException when the repository fails to save a transaction.
+     * It mocks the repository to throw an exception and asserts that the service handles it correctly.
+     */
     @Test
     void shouldThrowRuntimeExceptionWhenRepositoryFails() {
 
@@ -165,7 +188,10 @@ class TransactionServiceTest {
         verify(transactionRepository).save(any(Transaction.class));
     }
 
-
+    /**
+     * Test to verify that the service throws an IllegalArgumentException when either the sender or receiver does not exist.
+     * It mocks the user repository to indicate that the user does not exist and asserts that the service handles it correctly.
+     */
     @Test
     void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist() {
         User sender = new User("john", "john@mail.com", "password");
@@ -185,6 +211,10 @@ class TransactionServiceTest {
 
     }
 
+    /**
+     * Test to verify that the service throws an IllegalArgumentException when the transaction description is empty.
+     * It asserts that the service validates the input and handles it correctly.
+     */
     @Test
     void shouldThrowIllegalArgumentExceptionWhenDescriptionIsEmpty() {
         User sender = new User("john", "john@mail.com", "password");
@@ -202,6 +232,10 @@ class TransactionServiceTest {
 
     }
 
+    /**
+     * Test to verify that the service throws an IllegalArgumentException when the transaction amount is null.
+     * It asserts that the service validates the input and handles it correctly.
+     */
     @Test
     void shouldThrowIllegalArgumentExceptionWhenAmountIsNull() {
         User sender = new User("john", "john@mail.com", "password");
@@ -220,6 +254,10 @@ class TransactionServiceTest {
 
     }
 
+    /**
+     * Test to verify that the service throws an IllegalArgumentException when the transaction amount is zero.
+     * It asserts that the service validates the input and handles it correctly.
+     */
     @Test
     void shouldThrowIllegalArgumentExceptionWhenAmountIsZero() {
         User sender = new User("john", "john@mail.com", "password");
