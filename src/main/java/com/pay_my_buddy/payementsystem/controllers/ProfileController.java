@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,18 +19,28 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+/**
+ * Controller responsible for handling user profile-related operations, such as displaying the profile page and updating user information.
+ */
 @Controller
 @Slf4j
 @AllArgsConstructor
 public class ProfileController {
     private final UserService userService;
 
+    /**
+     * Handles GET requests to the "/profile" endpoint, displaying the user's profile page with their current information.
+     *
+     * @param model the Model object used to pass data to the view
+     * @return the name of the view to be rendered (profile page)
+     */
     @GetMapping("/profile")
-    public String getProfilePage(Model model, Authentication authentication) {
+    public String getProfilePage(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByEmail(authentication.getName());
 
-        String email = authentication.getName();
         try {
-            User user = userService.getUserByEmail(email);
+
             UpdateDTO updateDTO = new UpdateDTO();
             updateDTO.setUsername(user.getUsername());
             updateDTO.setEmail(user.getEmail());
@@ -44,8 +55,17 @@ public class ProfileController {
 
     }
 
+    /**
+     * Handles POST requests to the "/profile" endpoint, allowing users to update their profile information.
+     *
+     * @param updateDTO the DTO containing the updated user information
+     * @param model     the Model object used to pass data to the view
+     * @return the name of the view to be rendered (profile page or redirect to profile page)
+     */
     @PostMapping("/profile")
-    public String modifyProfile(@Valid @ModelAttribute UpdateDTO updateDTO, Model model, Authentication authentication, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String modifyProfile(@Valid @ModelAttribute UpdateDTO updateDTO, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
