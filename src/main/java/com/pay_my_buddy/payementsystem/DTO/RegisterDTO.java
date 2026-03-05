@@ -15,6 +15,6 @@ public class RegisterDTO {
     private String email;
 
     @NotBlank(message = "Le mot de passe ne peut pas être vide ou null")
-    @Size(min = 5, max = 8)
+    @Size(min = 5, max = 16)
     private String password;
 }

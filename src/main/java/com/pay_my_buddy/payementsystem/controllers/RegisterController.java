@@ -15,18 +15,35 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-
+/**
+ * Controller for handling user registration.
+ */
 @Controller
 @AllArgsConstructor
 public class RegisterController {
     private UserService userService;
 
+    /**
+     * Displays the registration page.
+     *
+     * @param model the model to hold attributes for the view
+     * @return the name of the registration view
+     */
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
         model.addAttribute("registerDTO", new RegisterDTO());
         return "register";
     }
 
+    /**
+     * Handles the user registration process.
+     *
+     * @param registerDTO the data transfer object containing registration details
+     * @param bindingResult the result of validation checks on the registration data
+     * @param redirectAttributes attributes for flash messages during redirection
+     * @param model the model to hold attributes for the view in case of errors
+     * @return a redirect to the login page on success, or the registration view on failure
+     */
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute RegisterDTO registerDTO, BindingResult bindingResult,
                                RedirectAttributes redirectAttributes, Model model) {

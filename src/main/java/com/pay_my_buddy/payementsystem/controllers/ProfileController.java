@@ -60,6 +60,8 @@ public class ProfileController {
      *
      * @param updateDTO the DTO containing the updated user information
      * @param model     the Model object used to pass data to the view
+     * @param bindingResult the BindingResult object used to check for validation errors
+     * @param redirectAttributes the RedirectAttributes object used to pass flash attributes during redirection
      * @return the name of the view to be rendered (profile page or redirect to profile page)
      */
     @PostMapping("/profile")
