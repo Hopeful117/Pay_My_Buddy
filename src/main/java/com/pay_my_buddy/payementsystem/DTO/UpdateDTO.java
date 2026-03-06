@@ -2,7 +2,6 @@ package com.pay_my_buddy.payementsystem.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
 import lombok.Data;
 
 @Data

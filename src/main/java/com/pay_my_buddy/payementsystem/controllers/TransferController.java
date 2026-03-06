@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -31,8 +31,9 @@ public class TransferController {
 
 
     @GetMapping("/home")
-    public String getTransferPage(Model model, Authentication authentication) {
+    public String getTransferPage(Model model) {
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
             User user = userService.getUserByEmail(email);
             List<User> user_connections = user.getConnections();
@@ -48,8 +49,9 @@ public class TransferController {
     }
 
     @PostMapping("/transfer")
-    public String Transfer(Model model, Principal principal, @Valid @ModelAttribute TransferDTO transferDTO, BindingResult bindingResult,
+    public String Transfer(Model model, @Valid @ModelAttribute TransferDTO transferDTO, BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -58,7 +60,7 @@ public class TransferController {
             return "redirect:/home";
         }
         try {
-            User sender = userService.getUserByEmail(principal.getName());
+            User sender = userService.getUserByEmail(authentication.getName());
             transactionService.transfer(sender, transferDTO.getReceiver(), transferDTO.getDescription(), transferDTO.getAmount());
             redirectAttributes.addFlashAttribute("success",
                     "Transfert effectué avec succès !");

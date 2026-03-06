@@ -38,10 +38,10 @@ public class RegisterController {
     /**
      * Handles the user registration process.
      *
-     * @param registerDTO the data transfer object containing registration details
-     * @param bindingResult the result of validation checks on the registration data
+     * @param registerDTO        the data transfer object containing registration details
+     * @param bindingResult      the result of validation checks on the registration data
      * @param redirectAttributes attributes for flash messages during redirection
-     * @param model the model to hold attributes for the view in case of errors
+     * @param model              the model to hold attributes for the view in case of errors
      * @return a redirect to the login page on success, or the registration view on failure
      */
     @PostMapping("/register")
