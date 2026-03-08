@@ -1,10 +1,15 @@
 package com.pay_my_buddy.payementsystem.controllers;
 
+import com.pay_my_buddy.payementsystem.model.User;
+import com.pay_my_buddy.payementsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,9 +19,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("test")
 public class RegisterControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    void setup() {
+        User user = new User();
+        user.setUsername("diana");
+        user.setEmail("diana@mail.com");
+        user.setPassword(passwordEncoder.encode("password"));
+
+        userRepository.save(user);
+    }
 
     /**
      * Tests the GET request to the "/register" endpoint, ensuring that the registration page is displayed correctly with the necessary model attributes.
@@ -50,8 +72,8 @@ public class RegisterControllerTest {
     @Test
     public void testRegisterAlreadyExistingUser() throws Exception {
         mockMvc.perform(post("/register")
-                        .param("username", "alice")
-                        .param("email", "alice@example.com")
+                        .param("username", "diana")
+                        .param("email", "diana@mail.com")
                         .param("password", "testPassword"))
                 .andExpect(model().attributeExists("errors"));
 
