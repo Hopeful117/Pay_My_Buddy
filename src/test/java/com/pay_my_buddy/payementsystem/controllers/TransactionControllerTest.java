@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class TransferControllerTest {
+public class TransactionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -98,7 +98,7 @@ public class TransferControllerTest {
     public void testAddTransaction() throws Exception {
         Optional<User> receiver = userRepository.findByEmail("alice@email.com");
         String receiverId= String.valueOf(receiver.get().getId());
-        mockMvc.perform(post("/transfer")
+        mockMvc.perform(post("/transaction")
                         .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user("diana@mail.com"))
                         .param("receiver", receiverId)
                         .param("description", "Test transaction")
@@ -119,7 +119,7 @@ public class TransferControllerTest {
     @Test
     @WithMockUser(username = "diana@mail.com")
     public void testAddTransactionWithInvalidParam() throws Exception {
-        mockMvc.perform(post("/transfer")
+        mockMvc.perform(post("/transaction")
                         .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user("diana@example.com"))
                         .param("receiver", "157463763737637")
                         .param("description", "failed test")

@@ -11,7 +11,7 @@
 <header th:replace="~{navbar :: navbar(currentPage=${currentPage})}"></header>
 
 <main>
-    <form method="post" th:action="@{/transfer}">
+    <form method="post" th:action="@{/transaction}">
         <label>
             <select id="recipient" name="receiver">
                 <option disabled selected value="">Sélectionner une relation</option>

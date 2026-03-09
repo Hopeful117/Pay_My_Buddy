@@ -1,7 +1,7 @@
 package com.pay_my_buddy.payementsystem.controllers;
 
 
-import com.pay_my_buddy.payementsystem.DTO.TransferDTO;
+import com.pay_my_buddy.payementsystem.DTO.TransactionDTO;
 import com.pay_my_buddy.payementsystem.model.Transaction;
 import com.pay_my_buddy.payementsystem.model.User;
 import com.pay_my_buddy.payementsystem.service.TransactionService;
@@ -25,7 +25,7 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 @Slf4j
-public class TransferController {
+public class TransactionController {
     private final UserService userService;
     private final TransactionService transactionService;
 
@@ -48,9 +48,9 @@ public class TransferController {
         }
     }
 
-    @PostMapping("/transfer")
-    public String Transfer(Model model, @Valid @ModelAttribute TransferDTO transferDTO, BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
+    @PostMapping("/transaction")
+    public String Transaction(Model model, @Valid @ModelAttribute TransactionDTO transactionDTO, BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
@@ -61,7 +61,7 @@ public class TransferController {
         }
         try {
             User sender = userService.getUserByEmail(authentication.getName());
-            transactionService.transfer(sender, transferDTO.getReceiver(), transferDTO.getDescription(), transferDTO.getAmount());
+            transactionService.transfer(sender, transactionDTO.getReceiver(), transactionDTO.getDescription(), transactionDTO.getAmount());
             redirectAttributes.addFlashAttribute("success",
                     "Transfert effectué avec succès !");
 

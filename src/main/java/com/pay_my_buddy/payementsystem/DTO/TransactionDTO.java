@@ -9,7 +9,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class TransferDTO {
+public class TransactionDTO {
     @NotNull(message = "Le receveur ne peut pas être vide")
     private User receiver;
     @NotBlank(message = "La description ne peut pas être vide")

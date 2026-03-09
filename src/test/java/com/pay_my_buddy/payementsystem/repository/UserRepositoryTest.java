@@ -49,4 +49,19 @@ public class UserRepositoryTest {
         assertThat(found.get().getEmail()).isEqualTo("jeanne@mail.com");
 
     }
+
+    @Test
+    void shouldReturnTrueIfUsernameExists(){
+        User saved = userRepository.save(new User("Jeanne","jeanne@mail.com","password2"));
+        boolean exists = userRepository.existsByUsername(saved.getUsername());
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    void shouldReturnTrueIfEmailExists(){
+        User saved = userRepository.save(new User("Jeanne","jeanne@mail.com","password2"));
+        boolean exists = userRepository.existsByEmail(saved.getEmail());
+        assertThat(exists).isTrue();
+
+    }
 }
