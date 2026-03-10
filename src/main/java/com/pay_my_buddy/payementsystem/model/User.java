@@ -8,7 +8,10 @@ import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Entity class representing a user in the payment system.
+ * This class is mapped to the "users" table in the database and contains information about the user's username, email, password, active status, and connections with other users.
+ */
 @Entity
 @Table(name = "users")
 @Getter

@@ -3,7 +3,10 @@ package com.pay_my_buddy.payementsystem.DTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
+/**
+ * Data Transfer Object (DTO) for updating user information.
+ * This class is used to capture and validate the data required for updating a user's profile, including username, email, and password.
+ */
 @Data
 public class UpdateDTO {
 

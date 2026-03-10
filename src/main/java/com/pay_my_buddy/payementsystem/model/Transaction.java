@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-
+/**
+ * Entity class representing a financial transaction between two users in the payment system.
+ * This class is mapped to the "transactions" table in the database and contains information about the sender, receiver, amount, and description of the transaction.
+ */
 @Entity
 @Table(name = "transactions")
 @Getter

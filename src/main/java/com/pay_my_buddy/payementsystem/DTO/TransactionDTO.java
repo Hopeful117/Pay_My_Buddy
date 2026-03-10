@@ -7,7 +7,10 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.math.BigDecimal;
-
+/**
+ * Data Transfer Object (DTO) for transactions between users.
+ * This class is used to capture and validate the data required for performing a transaction, including the receiver, description, and amount.
+ */
 @Data
 public class TransactionDTO {
     @NotNull(message = "Le receveur ne peut pas être vide")

@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
+/**
+ * Repository interface for managing User entities in the database.
+ * This interface extends JpaRepository, providing CRUD operations and custom query methods for User entities.
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
