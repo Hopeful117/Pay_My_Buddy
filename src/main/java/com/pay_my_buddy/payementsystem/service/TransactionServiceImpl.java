@@ -56,6 +56,9 @@ public class TransactionServiceImpl implements TransactionService {
         if (amount.compareTo(BigDecimal.ZERO) == 0) {
             throw new IllegalArgumentException("Le montant doit être supérieur à 0");
         }
+        if(sender == receiver){
+            throw new IllegalArgumentException("Auto-transactions non autorisées");
+        }
         try {
 
             final Transaction transaction = new Transaction(sender, receiver, description, normalizeAmount(amount));

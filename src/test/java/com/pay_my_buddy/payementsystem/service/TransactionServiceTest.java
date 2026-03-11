@@ -274,4 +274,14 @@ class TransactionServiceTest {
                 exception.getMessage());
 
     }
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenSenderAndReceiverAreTheSame() {
+        User sender = new User("john", "john@mail.com", "password");
+        sender.setId(1);
+        User receiver = sender;
+        BigDecimal amount = new BigDecimal(10);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> transactionService.transfer(sender, receiver, "Test", amount));
+        assertEquals("Auto-transactions non autorisées",
+                exception.getMessage());
+    }
 }
