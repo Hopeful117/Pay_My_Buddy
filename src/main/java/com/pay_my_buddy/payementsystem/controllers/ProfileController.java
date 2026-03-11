@@ -37,8 +37,12 @@ public class ProfileController {
     @GetMapping("/profile")
     public String getProfilePage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            log.warn("Unauthenticated user attempted to access the profile page.");
+            return "redirect:/login";
+        }
         User user = userService.getUserByEmail(authentication.getName());
-
+        log.info("User {} accessed their profile page.", user.getEmail());
         try {
 
             UpdateDTO updateDTO = new UpdateDTO();
@@ -67,7 +71,11 @@ public class ProfileController {
     @PostMapping("/profile")
     public String modifyProfile(@Valid @ModelAttribute UpdateDTO updateDTO, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+        if (authentication == null || !authentication.isAuthenticated()) {
+            log.warn("Unauthenticated user attempted to update their profile.");
+            return "redirect:/login";
+        }
+        log.info("User {} is attempting to update their profile.", authentication.getName());
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)

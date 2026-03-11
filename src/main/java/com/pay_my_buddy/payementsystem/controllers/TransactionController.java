@@ -38,8 +38,14 @@ public class TransactionController {
      */
     @GetMapping("/home")
     public String getTransactionPage(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()) {
+            log.warn("Utilisateur non authentifié tenté d'accéder à la page de transfert");
+            return "redirect:/login";
+        }
+        log.info ("Affichage de la page de transfert pour l'utilisateur : {}", authentication.getName());
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
             String email = authentication.getName();
             User user = userService.getUserByEmail(email);
             List<User> user_connections = user.getConnections();
@@ -65,6 +71,10 @@ public class TransactionController {
     public String Transaction(Model model, @Valid @ModelAttribute TransactionDTO transactionDTO, BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()) {
+            log.warn("Utilisateur non authentifié tenté d'effectuer une transaction");
+            return "redirect:/login";
+        }
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)

@@ -4,6 +4,7 @@ import com.pay_my_buddy.payementsystem.DTO.RegisterDTO;
 import com.pay_my_buddy.payementsystem.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class RegisterController {
     private UserService userService;
 
@@ -31,6 +33,7 @@ public class RegisterController {
      */
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
+        log.info("Accessing registration page");
         model.addAttribute("registerDTO", new RegisterDTO());
         return "register";
     }
@@ -47,7 +50,7 @@ public class RegisterController {
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute RegisterDTO registerDTO, BindingResult bindingResult,
                                RedirectAttributes redirectAttributes, Model model) {
-
+        log.info("Processing registration for user: {}", registerDTO.getUsername());
         if (bindingResult.hasErrors()) {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)

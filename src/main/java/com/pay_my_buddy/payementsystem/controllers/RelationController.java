@@ -32,6 +32,12 @@ public class RelationController {
      */
     @GetMapping("/relations")
     public String getRelationPage(Model model) {
+        log.info("Affichage de la page des relations");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()) {
+            log.warn("Utilisateur non authentifié tenté d'accéder à la page des relations");
+            return "redirect:/login";
+        }
         model.addAttribute("currentPage", "relations");
         return "relations";
     }
@@ -49,6 +55,10 @@ public class RelationController {
 
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                log.warn("Utilisateur non authentifié tenté d'ajouter une relation");
+                return "redirect:/login";
+            }
             User user = userService.getUserByEmail(authentication.getName());
             User friend = userService.getUserByEmail(email);
 
