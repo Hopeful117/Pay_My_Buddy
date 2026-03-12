@@ -14,6 +14,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,6 +48,7 @@ public class TransactionControllerTest {
         user.setUsername("diana");
         user.setEmail("diana@mail.com");
         user.setPassword(passwordEncoder.encode("password"));
+        user.setBalance(BigDecimal.valueOf(1000));
 
 
         userRepository.save(user);
@@ -55,6 +57,7 @@ public class TransactionControllerTest {
         user2.setUsername("alice");
         user2.setEmail("alice@email.com");
         user2.setPassword(passwordEncoder.encode("password"));
+        user.setBalance(BigDecimal.valueOf(1000));
         userRepository.save(user2);
 
         userService.addConnection(user.getId(), user2.getId());
@@ -125,6 +128,6 @@ public class TransactionControllerTest {
                         .param("description", "failed test")
                         .param("amount", "100")
                 )
-                .andExpect(model().attributeExists("errors"));
+                .andExpect(flash().attributeExists("errors"));
     }
 }

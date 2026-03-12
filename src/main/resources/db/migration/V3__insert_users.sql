@@ -1,9 +1,8 @@
-INSERT INTO `users` (id, username, email, password) VALUES
-(1, 'alice', 'alice@example.com', '$2a$10$TeOMwIZXNl5vf1FcExdGZerTLYshpo2EInuX/OTU3NKr7Z2kJLTfm'
-),
-(2, 'bob', 'bob@example.com', '$2a$10$TeOMwIZXNl5vf1FcExdGZerTLYshpo2EInuX/OTU3NKr7Z2kJLTfm'),
-(3, 'charlie', 'charlie@example.com', '$2a$10$TeOMwIZXNl5vf1FcExdGZerTLYshpo2EInuX/OTU3NKr7Z2kJLTfm'),
-(4, 'diana', 'diana@example.com', '$2a$10$TeOMwIZXNl5vf1FcExdGZerTLYshpo2EInuX/OTU3NKr7Z2kJLTfm');
+INSERT INTO `users` (id, username, email, password, balance) VALUES
+(1, 'alice', 'alice@example.com', '$2a$10$TeOMwIZXNl5vf1FcExdGZerTLYshpo2EInuX/OTU3NKr7Z2kJLTfm', 1000.00),
+(2, 'bob', 'bob@example.com', '$2a$10$TeOMwIZXNl5vf1FcExdGZerTLYshpo2EInuX/OTU3NKr7Z2kJLTfm', 1000.00),
+(3, 'charlie', 'charlie@example.com', '$2a$10$TeOMwIZXNl5vf1FcExdGZerTLYshpo2EInuX/OTU3NKr7Z2kJLTfm', 1000.00),
+(4, 'diana', 'diana@example.com', '$2a$10$TeOMwIZXNl5vf1FcExdGZerTLYshpo2EInuX/OTU3NKr7Z2kJLTfm', 1000.00);
 
 INSERT INTO `user_connections` (user_id, connection_id, created_at) VALUES
 (1, 2, '2025-01-10 09:30:00'),
@@ -17,3 +16,4 @@ INSERT INTO `transactions` (id, sender, receiver, description, amount) VALUES
 (2, 2, 1, 'Participation cinéma', 12.00),
 (3, 3, 1, 'Cadeau anniversaire', 40.00),
 (4, 4, 3, 'Partage abonnement', 8.99);
+

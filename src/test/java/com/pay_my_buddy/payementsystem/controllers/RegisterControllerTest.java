@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -36,6 +38,7 @@ public class RegisterControllerTest {
         user.setUsername("diana");
         user.setEmail("diana@mail.com");
         user.setPassword(passwordEncoder.encode("password"));
+        user.setBalance(BigDecimal.valueOf(1000));
 
         userRepository.save(user);
     }

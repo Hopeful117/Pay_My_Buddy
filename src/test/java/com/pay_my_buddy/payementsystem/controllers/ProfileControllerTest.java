@@ -13,6 +13,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -43,6 +45,7 @@ public class ProfileControllerTest {
         user.setUsername("diana");
         user.setEmail("diana@mail.com");
         user.setPassword(passwordEncoder.encode("password"));
+        user.setBalance(BigDecimal.valueOf(1000));
 
         userRepository.save(user);
 
@@ -50,6 +53,7 @@ public class ProfileControllerTest {
         user2.setUsername("alice");
         user2.setEmail("alice@email.com");
         user2.setPassword(passwordEncoder.encode("password"));
+        user2.setBalance(BigDecimal.valueOf(1000));
         userRepository.save(user2);
     }
 

@@ -52,6 +52,10 @@ public class TransactionServiceImpl implements TransactionService {
             throw new IllegalArgumentException("Le montant doit être supérieur à 0");
         }
 
+        if(amount.compareTo(sender.getBalance()) > 0){
+            throw new IllegalArgumentException("Fonds insuffisants");
+        }
+
 
         if (!userRepository.existsByUsername(sender.getUsername())) {
             throw new IllegalArgumentException("Utilisateur non trouvé");
@@ -65,8 +69,12 @@ public class TransactionServiceImpl implements TransactionService {
             throw new IllegalArgumentException("Auto-transactions non autorisées");
         }
 //        try {
-
-        final Transaction transaction = new Transaction(sender, receiver, description, normalizeAmount(amount));
+        BigDecimal normalizedAmount = normalizeAmount(amount);
+        final Transaction transaction = new Transaction(sender, receiver, description, normalizedAmount);
+        sender.setBalance(sender.getBalance().subtract(normalizedAmount));
+        receiver.setBalance(receiver.getBalance().add(normalizedAmount));
+        userRepository.save(sender);
+        userRepository.save(receiver);
 
         transactionRepository.save(transaction);
         log.info("Transaction added successfully");

@@ -35,6 +35,9 @@ public class Transaction {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "created_at", nullable = false)
+    private java.time.LocalDateTime transactionDate = java.time.LocalDateTime.now();
+
     public Transaction(User sender, User receiver, String description, BigDecimal amount) {
         this.sender = sender;
         this.receiver = receiver;

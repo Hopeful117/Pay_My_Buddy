@@ -42,8 +42,10 @@ class TransactionServiceTest {
     void setUp() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
+        sender.setBalance(BigDecimal.valueOf(1000.00));
 
         User receiver = new User("jane", "jane@mail.com", "password");
+        receiver.setBalance(BigDecimal.valueOf(500.00));
         receiver.setId(2);
 
 
@@ -74,6 +76,8 @@ class TransactionServiceTest {
     @Test
     void shouldReturnAllTransaction() {
         User sender = new User("john", "john@mail.com", "password");
+        sender.setBalance(BigDecimal.valueOf(500.00));
+        sender.setId(1);
 
 
         List<Transaction> result = transactionService.getTransactionsByUser(sender);
@@ -90,6 +94,7 @@ class TransactionServiceTest {
     void shouldReturnOnlyTransactionWhereUserIsSender() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
+        sender.setBalance(BigDecimal.valueOf(500.00));
         List<Transaction> result = transactionService.getTransactionsSentByUser(sender);
         assertEquals(1, result.size());
 
@@ -103,6 +108,7 @@ class TransactionServiceTest {
     void shouldReturnOnlyTransactionWhereUserIsReceiver() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
+        sender.setBalance(BigDecimal.valueOf(500.00));
         List<Transaction> result = transactionService.getTransactionsReceivedByUserId(sender);
         assertEquals(1, result.size());
 
@@ -115,6 +121,8 @@ class TransactionServiceTest {
     @Test
     void shouldReturnEmptyListIfNoTransactionExist() {
         User sender = new User("john", "john@mail.com", "password");
+        sender.setId(1);
+        sender.setBalance(BigDecimal.valueOf(500.00));
         when(transactionRepository.getTransactionsByUser(any(User.class))).thenReturn(List.of());
 
         List<Transaction> result = transactionService.getTransactionsByUser(sender);
@@ -139,26 +147,34 @@ class TransactionServiceTest {
     void shouldAddTransactionAndNormalizeAmount(String input, String expected) {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
+        sender.setBalance(BigDecimal.valueOf(500.00));
 
         User receiver = new User("jane", "jane@mail.com", "password");
         receiver.setId(2);
+        receiver.setBalance(BigDecimal.valueOf(100.00));
 
         BigDecimal inputAmount = new BigDecimal(input);
         BigDecimal expectedAmount = new BigDecimal(expected);
 
+        BigDecimal senderBalanceBefore = sender.getBalance();
+        BigDecimal receiverBalanceBefore = receiver.getBalance();
+
         transactionService.transfer(sender, receiver, "Test", inputAmount);
 
+        // Vérifier la transaction sauvegardée
         ArgumentCaptor<Transaction> captor =
                 ArgumentCaptor.forClass(Transaction.class);
-
         verify(transactionRepository).save(captor.capture());
 
         Transaction savedTransaction = captor.getValue();
 
+        // Vérifier que le montant est arrondi correctement
         assertEquals(expectedAmount, savedTransaction.getAmount());
+
+        // Vérifier les soldes après transfert
+        assertEquals(senderBalanceBefore.subtract(expectedAmount), sender.getBalance());
+        assertEquals(receiverBalanceBefore.add(expectedAmount), receiver.getBalance());
     }
-
-
 
     /**
      * Test to verify that the service throws an IllegalArgumentException when either the sender or receiver does not exist.
@@ -168,9 +184,11 @@ class TransactionServiceTest {
     void shouldThrowIllegalArgumentExceptionWhenUserDoesntExist() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
+        sender.setBalance(BigDecimal.valueOf(500.00));
 
         User receiver = new User("jane", "jane@mail.com", "password");
         receiver.setId(2);
+        receiver.setBalance(BigDecimal.valueOf(100.00));
 
         BigDecimal amount = new BigDecimal("10.00");
 
@@ -250,10 +268,24 @@ class TransactionServiceTest {
     void shouldThrowIllegalArgumentExceptionWhenSenderAndReceiverAreTheSame() {
         User sender = new User("john", "john@mail.com", "password");
         sender.setId(1);
+        sender.setBalance(BigDecimal.valueOf(1000.00));
         User receiver = sender;
         BigDecimal amount = new BigDecimal(10);
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> transactionService.transfer(sender, receiver, "Test", amount));
         assertEquals("Auto-transactions non autorisées",
+                exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionWhenSenderHasInsufficientBalance() {
+        User sender = new User("john", "john@mail.com", "password");
+        sender.setId(1);
+        sender.setBalance(BigDecimal.valueOf(50.00));
+        User receiver = new User("jane", "jane@mail.com", "password");
+        receiver.setId(2);
+        BigDecimal amount = new BigDecimal(100);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> transactionService.transfer(sender, receiver, "Test", amount));
+        assertEquals("Fonds insuffisants",
                 exception.getMessage());
     }
 }

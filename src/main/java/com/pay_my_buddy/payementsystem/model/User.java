@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -36,6 +37,9 @@ public class User {
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
+
+    @Column(name= "balance", nullable = false)
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @ManyToMany
     @JoinTable(
