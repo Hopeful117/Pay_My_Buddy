@@ -62,7 +62,7 @@ class TransactionServiceTest {
         List<Transaction> transactions = List.of(transaction1, transaction2);
 
 
-        lenient().when(transactionRepository.getTransactionsBySender(any(User.class)))
+        lenient().when(transactionRepository.getTransactionsByUser(any(User.class)))
                 .thenReturn(transactions);
         lenient().when(userRepository.existsByUsername(any(String.class))).thenReturn(true);
 
@@ -80,7 +80,7 @@ class TransactionServiceTest {
 
 
         assertEquals(2, result.size());
-        verify(transactionRepository).getTransactionsBySender(any(User.class));
+        verify(transactionRepository).getTransactionsByUser(any(User.class));
     }
 
     /**
@@ -115,11 +115,11 @@ class TransactionServiceTest {
     @Test
     void shouldReturnEmptyListIfNoTransactionExist() {
         User sender = new User("john", "john@mail.com", "password");
-        when(transactionRepository.getTransactionsBySender(any(User.class))).thenReturn(List.of());
+        when(transactionRepository.getTransactionsByUser(any(User.class))).thenReturn(List.of());
 
         List<Transaction> result = transactionService.getTransactionsByUser(sender);
         assertEquals(0, result.size());
-        verify(transactionRepository).getTransactionsBySender(any(User.class));
+        verify(transactionRepository).getTransactionsByUser(any(User.class));
 
 
     }
@@ -158,35 +158,7 @@ class TransactionServiceTest {
         assertEquals(expectedAmount, savedTransaction.getAmount());
     }
 
-    /**
-     * Test to verify that the service throws a RuntimeException when the repository fails to save a transaction.
-     * It mocks the repository to throw an exception and asserts that the service handles it correctly.
-     */
-    @Test
-    void shouldThrowRuntimeExceptionWhenRepositoryFails() {
 
-        User sender = new User("john", "john@mail.com", "password");
-        sender.setId(1);
-
-        User receiver = new User("jane", "jane@mail.com", "password");
-        receiver.setId(2);
-
-        BigDecimal amount = new BigDecimal("10.00");
-
-
-        when(transactionRepository.save(any(Transaction.class)))
-                .thenThrow(new RuntimeException("Database error"));
-
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
-                () -> transactionService.transfer(sender, receiver, "Test", amount)
-        );
-
-        assertEquals("Une erreur s'est produite lors de la transaction",
-                exception.getMessage());
-
-        verify(transactionRepository).save(any(Transaction.class));
-    }
 
     /**
      * Test to verify that the service throws an IllegalArgumentException when either the sender or receiver does not exist.

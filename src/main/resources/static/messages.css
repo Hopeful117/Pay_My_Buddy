@@ -1,13 +1,24 @@
 .error {
 color:red;
 
+
+
 }
 .success{
 color:blue;
+margin:20px;
+border:1px dotted blue;
+padding:20px;
+
 }
 
 ul{
 list-style:none;
 padding:0;
-margin:0;
+margin:20px
+
 }
+.alert-error {
+border:1px dotted red;
+margin:20px
+;}

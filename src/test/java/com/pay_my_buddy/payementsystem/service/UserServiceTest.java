@@ -268,7 +268,7 @@ public class UserServiceTest {
         updateDTO.setEmail("newemail");
         when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userService.updateUser(userId, updateDTO));
-        assertEquals("User not found", exception.getMessage());
+        assertEquals("Utilisateur non trouvé", exception.getMessage());
 
     }
 
@@ -348,7 +348,7 @@ public class UserServiceTest {
         String email = "email@example.com";
         when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userService.getUserByEmail(email));
-        assertEquals("User not found", exception.getMessage());
+        assertEquals("Utilisateur non trouvé", exception.getMessage());
         verify(userRepository).findByEmail(email);
     }
 

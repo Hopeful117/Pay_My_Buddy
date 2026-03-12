@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -37,13 +38,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public void transfer(User sender, User receiver, String description, BigDecimal amount) {
         log.debug("Adding transaction from sender: {}, receiver: {},description{} amount: {}", sender, receiver, description, amount);
-        if (!userRepository.existsByUsername(sender.getUsername())) {
-            throw new IllegalArgumentException("Utilisateur non trouvé");
 
-        }
-        if (!userRepository.existsByUsername(receiver.getUsername())) {
-            throw new IllegalArgumentException(("Utilisateur non trouvé"));
-        }
 
         if (description.isEmpty()) {
             throw new IllegalArgumentException("La description ne peut pas être vide");
@@ -56,21 +51,31 @@ public class TransactionServiceImpl implements TransactionService {
         if (amount.compareTo(BigDecimal.ZERO) == 0) {
             throw new IllegalArgumentException("Le montant doit être supérieur à 0");
         }
+
+
+        if (!userRepository.existsByUsername(sender.getUsername())) {
+            throw new IllegalArgumentException("Utilisateur non trouvé");
+
+        }
+        if (!userRepository.existsByUsername(receiver.getUsername())) {
+            throw new IllegalArgumentException(("Utilisateur non trouvé"));
+        }
+
         if(sender == receiver){
             throw new IllegalArgumentException("Auto-transactions non autorisées");
         }
-        try {
+//        try {
 
-            final Transaction transaction = new Transaction(sender, receiver, description, normalizeAmount(amount));
+        final Transaction transaction = new Transaction(sender, receiver, description, normalizeAmount(amount));
 
-            transactionRepository.save(transaction);
-            log.info("Transaction added successfully");
+        transactionRepository.save(transaction);
+        log.info("Transaction added successfully");
 
-        } catch (Exception exception) {
-            throw new RuntimeException("Une erreur s'est produite lors de la transaction");
-
-
-        }
+//        } catch (Exception exception) {
+//            throw new RuntimeException("Une erreur s'est produite lors de la transaction", exception);
+//
+//
+//        }
     }
 
 
@@ -83,7 +88,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> getTransactionsByUser(User user) {
 
-        return transactionRepository.getTransactionsBySender(user);
+
+        return transactionRepository.getTransactionsByUser(user);
     }
 
     /**

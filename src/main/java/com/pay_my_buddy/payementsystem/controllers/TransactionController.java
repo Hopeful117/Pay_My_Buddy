@@ -49,10 +49,12 @@ public class TransactionController {
             String email = authentication.getName();
             User user = userService.getUserByEmail(email);
             List<User> user_connections = user.getConnections();
-            List<Transaction> transactions = transactionService.getTransactionsSentByUser(user);
+            List<Transaction> transactions = transactionService.getTransactionsByUser(user);
             model.addAttribute("transactions", transactions);
             model.addAttribute("connections", user_connections);
             model.addAttribute("currentPage", "home");
+            model.addAttribute("currentUser", user);
+
             return "home";
         } catch (Exception e) {
             return "redirect:/login";
@@ -79,7 +81,7 @@ public class TransactionController {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toList();
-            redirectAttributes.addAttribute("errors", errors);
+            redirectAttributes.addFlashAttribute("errors", errors);
             return "redirect:/home";
         }
         try {

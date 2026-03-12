@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUser(final int id, final UpdateDTO updateDTO) {
         final User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
 
         if (!updateDTO.getEmail().equals(user.getEmail())) {
             if (userRepository.existsByEmail(updateDTO.getEmail())) {
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         log.info("email : " + email);
         final User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
 
         log.info("User found: {}", user.getEmail());
         return user;

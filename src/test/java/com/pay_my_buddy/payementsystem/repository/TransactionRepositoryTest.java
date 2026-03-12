@@ -55,12 +55,12 @@ public class TransactionRepositoryTest {
     }
     @ParameterizedTest
     @CsvSource({
-            "diana,1",
-            "alice,1"
+            "diana,2",
+            "alice,2"
     })
-    void shouldGetTransactionsBySender(String username, int expectedSize){
+    void shouldGetTransactionsByUser(String username, int expectedSize){
         User user = userRepository.findByUsername(username).orElseThrow();
-        assertThat(transactionRepository.getTransactionsBySender(user)).hasSize(expectedSize);
+        assertThat(transactionRepository.getTransactionsByUser(user)).hasSize(expectedSize);
     }
 
 
