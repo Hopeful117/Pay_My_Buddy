@@ -55,8 +55,8 @@ public class RegisterController {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toList();
-            redirectAttributes.addAttribute("errors", errors);
-            return "register";
+            redirectAttributes.addFlashAttribute("errors", errors);
+            return "redirect:/register";
         }
 
         try {

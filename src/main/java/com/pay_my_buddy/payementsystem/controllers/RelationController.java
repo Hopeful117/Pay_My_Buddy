@@ -52,6 +52,11 @@ public class RelationController {
      */
     @PostMapping("/relations")
     public String addRelation(Model model, String email, RedirectAttributes redirectAttributes) {
+        if(email == null || email.isEmpty()) {
+            log.warn("Email de l'utilisateur à ajouter est vide");
+            redirectAttributes.addFlashAttribute("errors", "L'email ne peut pas être vide");
+            return "redirect:/relations";
+        }
 
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

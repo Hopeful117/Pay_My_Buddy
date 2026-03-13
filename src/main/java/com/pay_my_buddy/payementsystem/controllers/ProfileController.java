@@ -80,8 +80,8 @@ public class ProfileController {
             final List<String> errors = bindingResult.getAllErrors()
                     .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toList();
-            redirectAttributes.addAttribute("errors", errors);
-            return "profile";
+            redirectAttributes.addFlashAttribute("errors", errors);
+            return "redirect:/profile";
         }
         try {
             User user = userService.getUserByEmail(authentication.getName());
