@@ -34,7 +34,7 @@ instantanés.
 
 ## Diagramme de la base de données
 
-![MPD Pay my Buddy](docs/MPD.svg)
+![MPD Pay my Buddy](docs/paymybuddy_db.svg)
 
 ## Script SQL de création de la base de données
 
