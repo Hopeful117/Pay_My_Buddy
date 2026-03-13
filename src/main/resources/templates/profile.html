@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+    <link rel="stylesheet" th:href="@{/navbar.css}">
+    <link rel="stylesheet" th:href="@{/messages.css}">
+    <link rel="stylesheet" th:href="@{/profile.css}">
+</head>
+<body>
+<header th:replace="~{navbar :: navbar(currentPage=${currentPage})}"></header>
+<main>
+    <form method="post" th:action="@{/profile}" th:object="${updateDTO}">
+
+
+        <label><span>Username</span>
+            <input required th:attr="size=${#strings.length(updateDTO.username)}" th:field="*{username}"
+                   type="text"><span class="arrow">></span>
+        </label>
+
+
+        <label><span>Mail</span>
+            <input required th:attr="size=${#strings.length(updateDTO.email)}" th:field="*{email}"
+                   type="email"><span
+                    class="arrow">></span>
+        </label>
+
+
+        <label class="mdp"> <span>Mot de passe</span>
+            <input placeholder="mot de passe" th:field="*{password}" type="password"><span
+                    class="arrow">></span>
+            <button class="modificationBtn" type="submit">Modifier</button>
+        </label>
+
+
+    </form>
+    <div th:replace="~{messages :: messages}"></div>
+</main>
+</body>
+</html>

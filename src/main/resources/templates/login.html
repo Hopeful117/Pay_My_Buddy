@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:placeholder="http://www.w3.org/1999/xhtml" lang="FR">
+<html lang="FR" xmlns:th="http://www.thymeleaf.org">
 
 
 <head>
     <title>Connexion</title>
-    <link rel="stylesheet"  th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/login.css}">
+    <link rel="stylesheet" th:href="@{/messages.css}">
 </head>
 <body>
 <div class="box">
@@ -12,23 +13,20 @@
         <button class="company">Pay My Buddy</button>
     </div>
 
-    <form th:action="@{/login}" method="post">
+    <form method="post" th:action="@{/login}">
 
         <label>
-            <input type="text" name="email" placeholder="Email">
+            <input name="email" placeholder="Email" type="text">
         </label>
 
         <label>
-            <input type="password" name="password" placeholder="Mot de passe">
+            <input name="password" placeholder="Mot de passe" type="password">
 
         </label>
+        <div th:replace="~{messages :: messages}"></div>
         <button class="validationBtn" type="submit">Se connecter</button>
 
     </form>
-
-
-
-
 
 
 </div>

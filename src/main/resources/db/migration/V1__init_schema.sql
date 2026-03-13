@@ -1,0 +1,32 @@
+
+-- USERS
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    balance DECIMAL(10,2) NOT NULL DEFAULT 0.00
+);
+
+-- CONNEXIONS ENTRE USERS
+CREATE TABLE user_connections (
+    user_id INT NOT NULL,
+    connection_id INT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(user_id, connection_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (connection_id) REFERENCES users(id)
+);
+
+-- TRANSACTIONS
+CREATE TABLE transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender INT NOT NULL,
+    receiver INT NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender) REFERENCES users(id) ON DELETE RESTRICT,
+    FOREIGN KEY (receiver) REFERENCES users(id) ON DELETE RESTRICT
+);

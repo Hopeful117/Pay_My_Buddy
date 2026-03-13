@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/home.css}">
+    <link rel="stylesheet" th:href="@{/navbar.css}">
+    <link rel="stylesheet" th:href="@{/messages.css}">
+</head>
+<body>
+<header th:replace="~{navbar :: navbar(currentPage=${currentPage})}"></header>
+
+<main>
+    <form method="post" th:action="@{/transaction}">
+        <label for="recipient">
+            <select id="recipient" name="receiver" aria-label="Sélectionner une relation">
+                <option disabled selected value="">Sélectionner une relation</option>
+                <option th:each="connection : ${connections}" th:text="${connection.username}"
+                        th:value="${connection.id}"></option>
+            </select>
+        </label>
+        <label for="description" class="description">
+            <input id="description" name="description" placeholder="Description" type="text" aria-label="Description de la transaction">
+        </label>
+        <label for="amount" class="input-money">
+            <input id="amount" min="0" name="amount" placeholder=0 step="0.01" type="number" aria-label="Montant de la transaction">
+            <span class="currency">€</span>
+        </label>
+
+
+        <button class="validationBtn" type="submit">Payer</button>
+    </form>
+    <div th:replace="~{messages :: messages}"></div>
+    <table>
+        <thead>
+        <tr>
+            <th>Mes transactions</th>
+        </tr>
+        <tr>
+            <th>Relations</th>
+            <th>Description</th>
+            <th>Montant</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="transaction : ${transactions}">
+
+            <td th:text="${transaction.sender == currentUser
+            ? transaction.receiver.username
+            : transaction.sender.username}">
+            </td>
+            <td th:text="${transaction.description}"></td>
+            <td th:style="${transaction.sender == currentUser} ? 'color:red' : 'color:green'"
+                th:text="${transaction.amount} + '€'">
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</main>
+
+</body>
+</html>

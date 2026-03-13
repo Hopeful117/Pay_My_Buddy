@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.security.core.Authentication;
 
 @Controller
 @Slf4j
@@ -25,12 +23,7 @@ public class LoginController {
         log.info("Login page accessed");
         return "login";
     }
-    /**
-     * Gère les requêtes POST pour traiter la connexion de l'utilisateur.
-     *
-     * @param authentication L'objet d'authentification contenant les détails de l'utilisateur connecté.
-     * @return Un message indiquant le succès de la connexion.
-     */
 
-    }
+
+}
 

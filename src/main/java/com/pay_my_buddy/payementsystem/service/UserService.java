@@ -1,15 +1,22 @@
 package com.pay_my_buddy.payementsystem.service;
 
+import com.pay_my_buddy.payementsystem.DTO.UpdateDTO;
 import com.pay_my_buddy.payementsystem.model.User;
-import org.springframework.security.core.Authentication;
 
+/**
+ * Service interface for managing user-related operations.
+ */
 public interface UserService {
-    public boolean createUser(User user);
-    public void deleteAndAnonymizeUser(int id);
-    public void updateUserPasswordById(String password, int id);
-    public User getUserByEmail(String email);
+    void createUser(String username, String email, String password);
 
 
+    void updateUser(int id, UpdateDTO updateDTO);
+
+    User getUserByEmail(String email);
+
+    User getUserByUsername(String username);
+
+    void addConnection(int userId, int friendId);
 
 
 }

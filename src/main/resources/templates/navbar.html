@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar</title>
+    <link rel="stylesheet" th:href="@{/navbar.css}">
+</head>
+<body>
+<header th:fragment="navbar(currentPage)">
+    <p>Pay My Buddy</p>
+    <nav>
+        <a class="nav-link" th:classappend="${currentPage == 'home'} ? 'active'" th:href="@{/home}">Transférer</a>
+        <a class="nav-link" th:classappend="${currentPage == 'profile'} ? 'active'" th:href="@{/profile}">Profil</a>
+        <a class="nav-link" th:classappend="${currentPage == 'relations'} ? 'active'" th:href="@{/relations}">Ajouter
+            relation</a>
+        <a class="nav-link" th:href="@{/logout}">Se déconnecter</a>
+    </nav>
+</header>
+
+</body>
+</html>
